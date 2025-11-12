@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { profissionaisData } from './data/profissionais';
+import ProfilePage from './components/ProfilePage';
 
 function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode }) {
   const handleLogout = () => {
@@ -154,12 +155,14 @@ function ValuePropCard({ title, description }) {
  * Componente: LoginPage
  * Descrição: Página de "fake login".
  */
-function LoginPage({ setPage, setIsLoggedIn, darkMode }) {
+function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Em um app real, aqui haveria uma chamada de API
     setIsLoggedIn(true);
-    setPage('profissionais'); // Redireciona para a página de profissionais após o login
+    // Seleciona o primeiro profissional como o perfil a ser exibido (simulado)
+    setSelectedProfile(profissionaisData[0] || null);
+    setPage('profile'); // Redireciona para a página de perfil após o login
   };
 
   return (
@@ -588,6 +591,8 @@ export default function App() {
   
   // Estado para o modal
   const [modalProfile, setModalProfile] = useState(null);
+  // Estado para perfil selecionado (página de perfil após login)
+  const [selectedProfile, setSelectedProfile] = useState(null);
   
   // Estado para Dark Mode
   const [darkMode, setDarkMode] = useState(false);
@@ -611,7 +616,9 @@ export default function App() {
       case 'porque':
         return <PorqueSkillSync darkMode={darkMode} />;
       case 'login':
-        return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} darkMode={darkMode} />;
+        return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
+      case 'profile':
+        return <ProfilePage profile={selectedProfile} darkMode={darkMode} setPage={setPage} />;
       default:
         return <Homepage setPage={setPage} darkMode={darkMode} />;
     }
