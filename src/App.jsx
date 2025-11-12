@@ -17,9 +17,9 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode }
           SkillSync
         </h1>
         <div className="hidden md:flex items-center space-x-6">
-          <NavItem onClick={() => setPage('profissionais')}>Profissionais</NavItem>
-          <NavItem onClick={() => setPage('porque')}>Porque o SkillSync?</NavItem>
-          <NavItem href="#footer">Suporte</NavItem>
+          <NavItem onClick={() => setPage('profissionais')} underline>Profissionais</NavItem>
+          <NavItem onClick={() => setPage('porque')} underline>Porque o SkillSync?</NavItem>
+          <NavItem href="#footer" underline>Suporte</NavItem>
           <button 
             onClick={toggleDarkMode} 
             className={`p-2 rounded-full transition-colors ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-200'}`}
@@ -54,9 +54,12 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode }
 }
 
 // Sub-componente para os itens da Navbar
-function NavItem({ children, onClick, href }) {
-  const classes = "font-medium text-lg hover:text-purple-600 transition-colors cursor-pointer";
-  
+function NavItem({ children, onClick, href, underline }) {
+  const base = "font-medium text-lg hover:text-purple-600 transition-colors cursor-pointer";
+  const underlineClasses = underline ? 'hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2' : '';
+
+  const classes = `${base} ${underlineClasses}`.trim();
+
   if (href) {
     return (
       <a href={href} className={classes}>
@@ -64,7 +67,7 @@ function NavItem({ children, onClick, href }) {
       </a>
     );
   }
-  
+
   return (
     <span onClick={onClick} className={classes}>
       {children}
@@ -541,19 +544,19 @@ function Footer({ darkMode }) {
       </div>
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 px-4 md:px-12">
         <div>
-          <h3 className="text-2xl font-bold mb-4 text-white">SkillSync</h3>
+          <h3 className="text-2xl font-bold mb-4 text-white hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2">SkillSync</h3>
           <p>Conectando talentos, impulsionando o futuro.</p>
         </div>
         <div>
           <h4 className="text-lg font-semibold mb-4 text-white">Links Rápidos</h4>
           <ul>
-            <li className="mb-2"><a href="#" className="hover:text-purple-300">Profissionais</a></li>
-            <li className="mb-2"><a href="#" className="hover:text-purple-300">Porque o SkillSync?</a></li>
-            <li className="mb-2"><a href="#" className="hover:text-purple-300">Criar Perfil</a></li>
+            <li className="mb-2"><a href="#" className="hover:text-purple-300 hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-2 decoration-2">Profissionais</a></li>
+            <li className="mb-2"><a href="#" className="hover:text-purple-300 hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-2 decoration-2">Porque o SkillSync?</a></li>
+            <li className="mb-2"><a href="#" className="hover:text-purple-300 ">Criar Perfil</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-lg font-semibold mb-4 text-white">Suporte</h4>
+          <h4 className="text-lg font-semibold mb-4 text-white hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2">Suporte</h4>
           <p className="mb-2">Email: <a href="mailto:suporte@skillsync.com" className="hover:text-purple-300">suporte@skillsync.com</a></p>
           <p className="mb-4">Telefone: (11) 99999-9999</p>
           <div className="flex space-x-4">
