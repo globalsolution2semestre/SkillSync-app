@@ -535,7 +535,7 @@ function Footer({ darkMode }) {
   return (
     <footer id="footer" className={`py-16 px-8 ${darkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-800 text-gray-200'}`}>
       <div className="max-w-7xl mx-auto mb-8 px-4 md:px-0">
-        <p className={`text-xl md:text-2xl font-semibold text-left md:text-left ${darkMode ? 'text-gray-300' : 'text-gray-200'}`}>
+        <p className={`text-xl md:text-2xl font-semibold text-left md:text-left ${darkMode ? 'text-gray-400' : 'text-gray-200'}`}>
           Entre em contato conosco a partir dos links abaixo
         </p>
       </div>
