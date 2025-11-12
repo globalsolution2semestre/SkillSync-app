@@ -7,7 +7,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
         darkMode ? 'bg-gray-800' : 'bg-white'
       }`}>
         
-        {/* Header do Modal */}
+        
         <div className={`p-6 border-b ${
           darkMode ? 'border-gray-700' : 'border-gray-200'
         }`}>
@@ -56,7 +56,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </span>
           </div>
 
-          {/* Botões de Ação */}
+          
           <div className="flex gap-3">
             <button
               onClick={() => onRecommend(professional.id)}
@@ -81,10 +81,10 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
           </div>
         </div>
 
-        {/* Conteúdo do Modal */}
+        
         <div className="p-6 space-y-6">
           
-          {/* Habilidades Técnicas */}
+          
           <section>
             <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               Habilidades Técnicas
@@ -103,7 +103,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </div>
           </section>
 
-          {/* Soft Skills */}
+          
           <section>
             <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               Soft Skills
@@ -122,7 +122,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </div>
           </section>
 
-          {/* Experiências */}
+          
           <section>
             <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               Experiências Profissionais
@@ -150,7 +150,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </div>
           </section>
 
-          {/* Formação Acadêmica */}
+          
           <section>
             <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
               Formação Acadêmica
@@ -171,7 +171,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </div>
           </section>
 
-          {/* Projetos */}
+          
           {professional.projetos && professional.projetos.length > 0 && (
             <section>
               <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -201,7 +201,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </section>
           )}
 
-          {/* Certificações */}
+          
           {professional.certificacoes && professional.certificacoes.length > 0 && (
             <section>
               <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -222,7 +222,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </section>
           )}
 
-          {/* Idiomas */}
+          
           {professional.idiomas && professional.idiomas.length > 0 && (
             <section>
               <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -247,7 +247,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
             </section>
           )}
 
-          {/* Áreas de Interesse */}
+          
           {professional.areaInteresses && professional.areaInteresses.length > 0 && (
             <section>
               <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>

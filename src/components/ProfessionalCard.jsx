@@ -51,7 +51,7 @@ function ProfessionalCard({ professional, darkMode, onViewProfile, onMessage }) 
         )}
       </div>
       
-      {/* Botões de Ação no Card */}
+      
       <div className="flex gap-2">
         <button
           onClick={onViewProfile}
