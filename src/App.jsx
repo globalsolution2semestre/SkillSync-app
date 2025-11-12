@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { profissionaisData } from './data/profissionais';
 import ProfilePage from './components/ProfilePage';
 
-function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode }) {
+function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile }) {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setPage('home');
@@ -38,12 +38,34 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode }
               Entrar
             </button>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 text-white px-5 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors"
-            >
-              Sair
-            </button>
+            <>
+              {/* Avatar clicável: leva ao perfil selecionado */}
+              {selectedProfile ? (
+                <img
+                  src={selectedProfile.foto}
+                  alt={selectedProfile.nome}
+                  onClick={() => {
+                    // já deve existir selectedProfile; navega para a página de perfil
+                    setPage('profile');
+                  }}
+                  className={`w-10 h-10 rounded-full object-cover cursor-pointer ring-2 ${darkMode ? 'ring-gray-700' : 'ring-white'}`}
+                />
+              ) : (
+                <button
+                  onClick={() => setPage('profile')}
+                  className="w-10 h-10 rounded-full bg-gray-200 text-gray-700 flex items-center justify-center font-semibold"
+                >
+                  ?
+                </button>
+              )}
+
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors"
+              >
+                Sair
+              </button>
+            </>
           )}
           <div className="md:hidden">
             {/* Menu Hamburguer (pode ser implementado) */}
@@ -210,7 +232,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
  * Componente: ProfissionaisPage
  * Descrição: Página que lista todos os profissionais.
  */
-function ProfissionaisPage({ setModalProfile, darkMode }) {
+function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setPage }) {
   // Estados para filtros (pode ser expandido)
   const [searchTerm, setSearchTerm] = useState('');
   const [filterArea, setFilterArea] = useState('');
@@ -282,6 +304,8 @@ function ProfissionaisPage({ setModalProfile, darkMode }) {
               profile={profile} 
               setModalProfile={setModalProfile}
               darkMode={darkMode}
+              setSelectedProfile={setSelectedProfile}
+              setPage={setPage}
             />
           ))}
         </div>
@@ -302,7 +326,7 @@ function ProfissionaisPage({ setModalProfile, darkMode }) {
  * Componente: ProfessionalCard
  * Descrição: Card individual de um profissional na lista.
  */
-function ProfessionalCard({ profile, setModalProfile, darkMode }) {
+function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfile, setPage }) {
   return (
     <div className={`p-6 rounded-lg shadow-lg transition-transform hover:scale-[1.02] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
       <div className="flex items-center mb-4">
@@ -330,9 +354,16 @@ function ProfessionalCard({ profile, setModalProfile, darkMode }) {
           </span>
         )}
       </div>
-      <div className="flex gap-4">
+        <div className="flex gap-4">
         <button
-          onClick={() => setModalProfile(profile)}
+          onClick={() => {
+            if (setSelectedProfile && setPage) {
+              setSelectedProfile(profile);
+              setPage('profile');
+            } else if (setModalProfile) {
+              setModalProfile(profile);
+            }
+          }}
           className="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
         >
           Ver Perfil
@@ -612,7 +643,7 @@ export default function App() {
       case 'home':
         return <Homepage setPage={setPage} darkMode={darkMode} />;
       case 'profissionais':
-        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} />;
+        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} />;
       case 'porque':
         return <PorqueSkillSync darkMode={darkMode} />;
       case 'login':
@@ -632,6 +663,8 @@ export default function App() {
         setIsLoggedIn={setIsLoggedIn}
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
+        selectedProfile={selectedProfile}
+        setSelectedProfile={setSelectedProfile}
       />
       
       <main>
