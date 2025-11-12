@@ -796,7 +796,40 @@ function ProfileSection({ title, children }) {
  * Componente: Footer
  * Descrição: Rodapé do site, alvo do link "Suporte".
  */
-
+function Footer({ darkMode }) {
+  return (
+    <footer id="footer" className={`py-16 px-8 ${darkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-800 text-gray-200'}`}>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h3 className="text-2xl font-bold mb-4 text-white">SkillSync</h3>
+          <p>Conectando talentos, impulsionando o futuro.</p>
+        </div>
+        <div>
+          <h4 className="text-lg font-semibold mb-4 text-white">Links Rápidos</h4>
+          <ul>
+            <li className="mb-2"><a href="#" className="hover:text-purple-300">Profissionais</a></li>
+            <li className="mb-2"><a href="#" className="hover:text-purple-300">Porque o SkillSync?</a></li>
+            <li className="mb-2"><a href="#" className="hover:text-purple-300">Criar Perfil</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-lg font-semibold mb-4 text-white">Suporte</h4>
+          <p className="mb-2">Email: <a href="mailto:suporte@skillsync.com" className="hover:text-purple-300">suporte@skillsync.com</a></p>
+          <p className="mb-4">Telefone: (11) 99999-9999</p>
+          <div className="flex space-x-4">
+            {/* Adicionar ícones de redes sociais */}
+            <a href="#" className="hover:text-purple-300">Twitter</a>
+            <a href="#" className="hover:text-purple-300">LinkedIn</a>
+            <a href="#" className="hover:text-purple-300">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div className="text-center mt-12 border-t border-gray-700 pt-8">
+        <p>&copy; {new Date().getFullYear()} SkillSync. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+  );
+}
 
 
 /**
