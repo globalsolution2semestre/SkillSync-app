@@ -43,7 +43,7 @@ function App() {
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
+        
         <header className="text-center mb-12">
           <h1 className={`text-4xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
             Encontre os Melhores Profissionais
@@ -60,7 +60,7 @@ function App() {
           </button>
         </header>
 
-        {/* Busca e Filtros */}
+        
         <SearchBar 
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -74,7 +74,7 @@ function App() {
           darkMode={darkMode}
         />
 
-        {/* Grid de Profissionais */}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProfessionals.map(professional => (
             <ProfessionalCard
@@ -86,12 +86,12 @@ function App() {
           ))}
         </div>
 
-        {/* Contador de resultados */}
+        
         <div className={`text-center mt-8 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
           {filteredProfessionals.length} profissional{filteredProfessionals.length !== 1 ? 'es' : ''} encontrado{filteredProfessionals.length !== 1 ? 's' : ''}
         </div>
 
-        {/* Modal */}
+        
         <ProfessionalModal
           professional={selectedProfessional}
           darkMode={darkMode}

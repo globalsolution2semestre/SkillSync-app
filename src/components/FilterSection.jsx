@@ -3,7 +3,7 @@ import { useState } from 'react'
 function FilterSection({ filters, onFiltersChange, professionals, darkMode }) {
   const [isOpen, setIsOpen] = useState(false)
   
-  // Extrair opções únicas dos profissionais
+
   const areas = [...new Set(professionals.map(p => p.area))]
   const cidades = [...new Set(professionals.map(p => p.localizacao.split('/')[0]))]
   const tecnologias = [...new Set(professionals.flatMap(p => p.habilidadesTecnicas))]
@@ -11,7 +11,7 @@ function FilterSection({ filters, onFiltersChange, professionals, darkMode }) {
   return (
     <div className="mb-8">
       <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        {/* Filtro de Área */}
+        
         <select
           value={filters.area}
           onChange={(e) => onFiltersChange({ ...filters, area: e.target.value })}
@@ -29,7 +29,7 @@ function FilterSection({ filters, onFiltersChange, professionals, darkMode }) {
           ))}
         </select>
 
-        {/* Filtro de Cidade */}
+        
         <select
           value={filters.cidade}
           onChange={(e) => onFiltersChange({ ...filters, cidade: e.target.value })}
@@ -47,7 +47,7 @@ function FilterSection({ filters, onFiltersChange, professionals, darkMode }) {
           ))}
         </select>
 
-        {/* Botão para mais filtros */}
+        
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`px-4 py-2 rounded-lg border transition-colors ${
@@ -60,7 +60,7 @@ function FilterSection({ filters, onFiltersChange, professionals, darkMode }) {
         </button>
       </div>
 
-      {/* Filtros expandidos */}
+      
       {isOpen && (
         <div className={`mt-4 p-4 rounded-lg ${
           darkMode ? 'bg-gray-800' : 'bg-gray-100'
