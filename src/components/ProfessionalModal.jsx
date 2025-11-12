@@ -251,7 +251,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
           {professional.areaInteresses && professional.areaInteresses.length > 0 && (
             <section>
               <h3 className={`text-lg font-semibold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                Áreas de Interesse
+                Áreas de Interesses
               </h3>
               <div className="flex flex-wrap gap-2">
                 {professional.areaInteresses.map((interesse, index) => (
