@@ -145,5 +145,4 @@ export const professionals = [
     ],
     areaInteresses: ["Cloud Computing", "Segurança", "Automação"]
   }
-  // Você pode adicionar mais 56 profissionais seguindo o mesmo padrão
 ];
