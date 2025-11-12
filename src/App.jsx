@@ -1,281 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { profissionaisData } from './data/profissionais';
 
-// --- Mock Data: Profissionais ---
-// Em um projeto real, isso viria de um arquivo profissionais.json
-const mockProfissionais = [
-  {
-    id: 1,
-    nome: "Ana Silva",
-    foto: "https://placehold.co/100x100/A985D4/FFFFFF?text=AS",
-    cargo: "Engenheira de Software Sênior",
-    resumo: "Especialista em desenvolvimento full-stack com 8 anos de experiência em React, Node.js e arquitetura de microsserviços.",
-    localizacao: "São Paulo/SP",
-    area: "Desenvolvimento",
-    habilidadesTecnicas: ["Python", "JavaScript", "React", "Node.js", "PostgreSQL", "AWS", "Docker"],
-    softSkills: ["Liderança", "Comunicação", "Resolução de Problemas", "Trabalho em Equipe"],
-    experiencias: [
-      { empresa: "Tech Solutions", cargo: "Senior Developer", inicio: "2021-06", fim: "Atual", descricao: "Liderou equipe de 5 desenvolvedores em projetos de grande escala." },
-      { empresa: "Web Innovate", cargo: "Pleno Developer", inicio: "2018-03", fim: "2021-05", descricao: "Desenvolvimento de aplicações web responsivas." }
-    ],
-    formacao: [
-      { curso: "Bacharelado em Ciência da Computação", instituicao: "Universidade de São Paulo", ano: "2016" }
-    ],
-    projetos: [
-      { titulo: "Plataforma E-commerce", link: "#", descricao: "Sistema completo de e-commerce com React e Node.js." }
-    ],
-    certificacoes: ["AWS Certified Developer"],
-    idiomas: [{ idioma: "Inglês", nivel: "Fluente" }, { idioma: "Espanhol", nivel: "Intermediário" }],
-    areaInteresses: ["IA ética", "Educação", "Computação Quântica"]
-  },
-  {
-    id: 2,
-    nome: "Carlos Santos",
-    foto: "https://placehold.co/100x100/85D4A9/FFFFFF?text=CS",
-    cargo: "Product Designer",
-    resumo: "Designer com foco em UX/UI e pesquisa de usuário, apaixonado por criar produtos intuitivos e acessíveis.",
-    localizacao: "Rio de Janeiro/RJ",
-    area: "Design",
-    habilidadesTecnicas: ["Figma", "Sketch", "Adobe XD", "User Research", "Prototipagem"],
-    softSkills: ["Empatia", "Colaboração", "Comunicação Visual"],
-    experiencias: [
-      { empresa: "Design Co.", cargo: "Lead Designer", inicio: "2020-01", fim: "Atual", descricao: "Liderança da equipe de design de produto." }
-    ],
-    formacao: [
-      { curso: "Design Gráfico", instituicao: "Universidade Federal do Rio de Janeiro", ano: "2017" }
-    ],
-    projetos: [
-      { titulo: "App de Meditação", link: "#", descricao: "Design e prototipagem de app mobile." }
-    ],
-    certificacoes: ["Certified UX Designer (NN/g)"],
-    idiomas: [{ idioma: "Inglês", nivel: "Fluente" }],
-    areaInteresses: ["Acessibilidade", "Design Inclusivo"]
-  },
-  {
-    id: 3,
-    nome: "Mariana Oliveira",
-    foto: "https://placehold.co/100x100/D48585/FFFFFF?text=MO",
-    cargo: "Data Scientist",
-    resumo: "Cientista de dados com expertise em machine learning e análise preditiva. Focada em extrair insights de grandes volumes de dados.",
-    localizacao: "Belo Horizonte/MG",
-    area: "Data Science",
-    habilidadesTecnicas: ["Python", "SQL", "TensorFlow", "Pandas", "Scikit-learn"],
-    softSkills: ["Pensamento Crítico", "Comunicação", "Curiosidade"],
-    experiencias: [
-      { empresa: "DataInsights", cargo: "Data Scientist", inicio: "2019-07", fim: "Atual", descricao: "Modelagem preditiva para o setor financeiro." }
-    ],
-    formacao: [
-      { curso: "Mestrado em Ciência da Computação", instituicao: "UFMG", ano: "2019" },
-      { curso: "Estatística", instituicao: "UFMG", ano: "2017" }
-    ],
-    projetos: [
-      { titulo: "Modelo de Risco de Crédito", link: "#", descricao: "Desenvolvimento de modelo de ML para prever inadimplência." }
-    ],
-    certificacoes: [],
-    idiomas: [{ idioma: "Inglês", nivel: "Fluente" }],
-    areaInteresses: ["Machine Learning", "Big Data", "Fintech"]
-  },
-  {
-    id: 4,
-    nome: "Ricardo Lima",
-    foto: "https://placehold.co/100x100/85A4D4/FFFFFF?text=RL",
-    cargo: "DevOps Engineer",
-    resumo: "Especialista em infraestrutura cloud e automação de deployments, focado em CI/CD e monitoramento.",
-    localizacao: "Porto Alegre/RS",
-    area: "Infraestrutura",
-    habilidadesTecnicas: ["AWS", "Docker", "Kubernetes", "Terraform", "Jenkins", "Prometheus"],
-    softSkills: ["Colaboração", "Resiliência", "Foco em Resultados"],
-    experiencias: [
-      { empresa: "CloudFast", cargo: "DevOps Engineer", inicio: "2019-02", fim: "Atual", descricao: "Automação de pipelines CI/CD e gerenciamento de clusters K8s." }
-    ],
-    formacao: [
-      { curso: "Engenharia de Computação", instituicao: "UFRGS", ano: "2018" }
-    ],
-    projetos: [
-      { titulo: "Infraestrutura como Código", link: "#", descricao: "Migração de infraestrutura legada para AWS com Terraform." }
-    ],
-    certificacoes: ["AWS Certified DevOps Engineer", "CKA"],
-    idiomas: [{ idioma: "Inglês", nivel: "Fluente" }],
-    areaInteresses: ["Cloud Computing", "Segurança", "Automação"]
-  },
-  {
-    id: 5,
-    nome: "Bruno Costa",
-    foto: "https://placehold.co/100x100/D4B785/FFFFFF?text=BC",
-    cargo: "Desenvolvedor Mobile (iOS/Android)",
-    resumo: "Desenvolvedor mobile com 5 anos de experiência em React Native e Swift. Focado em performance e UX.",
-    localizacao: "Curitiba/PR",
-    area: "Desenvolvimento",
-    habilidadesTecnicas: ["React Native", "Swift", "Kotlin", "Firebase", "Git"],
-    softSkills: ["Proatividade", "Comunicação", "Adaptabilidade"],
-    experiencias: [
-      { empresa: "AppNext", cargo: "Mobile Developer", inicio: "2019-01", fim: "Atual", descricao: "Desenvolvimento de apps híbridos e nativos." }
-    ],
-    formacao: [
-      { curso: "Análise e Desenvolvimento de Sistemas", instituicao: "UTFPR", ano: "2018" }
-    ],
-    projetos: [],
-    certificacoes: [],
-    idiomas: [{ idioma: "Inglês", nivel: "Avançado" }],
-    areaInteresses: ["Mobile", "Flutter", "UX/UI"]
-  },
-  {
-    id: 6,
-    nome: "Juliana Pereira",
-    foto: "https://placehold.co/100x100/85D4C6/FFFFFF?text=JP",
-    cargo: "UX/UI Designer Sênior",
-    resumo: "Especialista em Design de Interação e Arquitetura de Informação. 7 anos de experiência em B2B e B2C.",
-    localizacao: "São Paulo/SP",
-    area: "Design",
-    habilidadesTecnicas: ["Figma", "Design Thinking", "User Journey", "Wireframing", "Testes de Usabilidade"],
-    softSkills: ["Empatia", "Liderança", "Pensamento Analítico"],
-    experiencias: [
-      { empresa: "Fintech Growth", cargo: "UX/UI Designer Sênior", inicio: "2020-03", fim: "Atual", descricao: "Liderando o design de novos produtos financeiros." }
-    ],
-    formacao: [
-      { curso: "Pós-graduação em Design de Interação", instituicao: "Senac", ano: "2019" },
-      { curso: "Design Digital", instituicao: "Anhembi Morumbi", ano: "2016" }
-    ],
-    projetos: [],
-    certificacoes: [],
-    idiomas: [{ idioma: "Inglês", nivel: "Fluente" }],
-    areaInteresses: ["Design Systems", "Acessibilidade", "Fintech"]
-  },
-  {
-    id: 7,
-    nome: "Felipe Mendes",
-    foto: "https://placehold.co/100x100/A9A9A9/FFFFFF?text=FM",
-    cargo: "Engenheiro de Dados",
-    resumo: "Experiência em construção e manutenção de pipelines de dados (ETL) e arquitetura de Data Lakes.",
-    localizacao: "Recife/PE",
-    area: "Data Science",
-    habilidadesTecnicas: ["Python", "Spark", "Airflow", "SQL", "AWS", "Databricks"],
-    softSkills: ["Organização", "Resolução de Problemas", "Comunicação"],
-    experiencias: [
-      { empresa: "DataFlow", cargo: "Engenheiro de Dados", inicio: "2019-05", fim: "Atual", descricao: "Otimização de pipelines de ingestão de dados." }
-    ],
-    formacao: [
-      { curso: "Ciência da Computação", instituicao: "UFPE", ano: "2018" }
-    ],
-    projetos: [],
-    certificacoes: ["AWS Certified Data Analytics"],
-    idiomas: [{ idioma: "Inglês", nivel: "Avançado" }],
-    areaInteresses: ["Big Data", "Arquitetura de Dados", "MLOps"]
-  },
-  {
-    id: 8,
-    nome: "Lucas Gonçalves",
-    foto: "https://placehold.co/100x100/85A4D4/FFFFFF?text=LG",
-    cargo: "Desenvolvedor Back-End",
-    resumo: "Especialista em Java e ecossistema Spring. Focado em microsserviços e alta disponibilidade.",
-    localizacao: "Belo Horizonte/MG",
-    area: "Desenvolvimento",
-    habilidadesTecnicas: ["Java", "Spring Boot", "Kafka", "SQL", "Microsserviços", "AWS"],
-    softSkills: ["Foco", "Disciplina", "Trabalho em Equipe"],
-    experiencias: [
-      { empresa: "BankTech", cargo: "Desenvolvedor Back-End Sênior", inicio: "2017-10", fim: "Atual", descricao: "Desenvolvimento de APIs para o setor bancário." }
-    ],
-    formacao: [
-      { curso: "Sistemas de Informação", instituicao: "PUC Minas", ano: "2016" }
-    ],
-    projetos: [],
-    certificacoes: ["Oracle Certified Professional, Java SE 8 Programmer"],
-    idiomas: [{ idioma: "Inglês", nivel: "Intermediário" }],
-    areaInteresses: ["Arquitetura de Software", "Sistemas Distribuídos", "Fintech"]
-  },
-  {
-    id: 9,
-    nome: "Carla Dias",
-    foto: "https://placehold.co/100x100/D485B0/FFFFFF?text=CD",
-    cargo: "Scrum Master",
-    resumo: "Scrum Master certificada (CSM) com experiência em facilitar cerimônias ágeis e remover impedimentos.",
-    localizacao: "São Paulo/SP",
-    area: "Gestão",
-    habilidadesTecnicas: ["Scrum", "Kanban", "Jira", "Metodologias Ágeis", "Gestão de Conflitos"],
-    softSkills: ["Liderança Servidora", "Facilitação", "Comunicação"],
-    experiencias: [
-      { empresa: "AgilePlus", cargo: "Scrum Master", inicio: "2019-11", fim: "Atual", descricao: "Liderando 2 times de desenvolvimento." }
-    ],
-    formacao: [
-      { curso: "Administração", instituicao: "FGV", ano: "2015" }
-    ],
-    projetos: [],
-    certificacoes: ["Certified ScrumMaster (CSM)"],
-    idiomas: [{ idioma: "Inglês", nivel: "Fluente" }, { idioma: "Espanhol", nivel: "Básico" }],
-    areaInteresses: ["Agile Coach", "Gestão de Produtos", "Psicologia Organizacional"]
-  },
-  {
-    id: 10,
-    nome: "Rafael Moreira",
-    foto: "https://placehold.co/100x100/85D4A9/FFFFFF?text=RM",
-    cargo: "Engenheiro de Segurança da Informação",
-    resumo: "Especialista em Pentest e Análise de Vulnerabilidades. Focado em proteger infraestruturas cloud.",
-    localizacao: "Rio de Janeiro/RJ",
-    area: "Infraestrutura",
-    habilidadesTecnicas: ["Pentest", "Análise de Malwares", "SIEM", "AWS Security", "ISO 27001"],
-    softSkills: ["Atenção aos Detalhes", "Ética", "Pensamento Crítico"],
-    experiencias: [
-      { empresa: "SecureNet", cargo: "Analista de Segurança Sênior", inicio: "2018-06", fim: "Atual", descricao: "Identificação e mitigação de riscos de segurança." }
-    ],
-    formacao: [
-      { curso: "Segurança da Informação", instituicao: "Estácio", ano: "2017" }
-    ],
-    projetos: [],
-    certificacoes: ["OSCP", "CISSP"],
-    idiomas: [{ idioma: "Inglês", nivel: "Avançado" }],
-    areaInteresses: ["Cybersecurity", "Red Team", "Cloud Security"]
-  },
-  {
-    id: 11,
-    nome: "Beatriz Almeida",
-    foto: "https://placehold.co/100x100/A985D4/FFFFFF?text=BA",
-    cargo: "Product Manager",
-    resumo: "Gerente de Produto com experiência em definição de roadmap, priorização de features e análise de métricas (B2C).",
-    localizacao: "São Paulo/SP",
-    area: "Gestão",
-    habilidadesTecnicas: ["Roadmapping", "Priorização (RICE, MoSCoW)", "Análise de Métricas", "Jira", "SQL (Básico)"],
-    softSkills: ["Visão de Negócio", "Comunicação", "Negociação", "Liderança"],
-    experiencias: [
-      { empresa: "E-commerce X", cargo: "Product Manager", inicio: "2020-01", fim: "Atual", descricao: "Responsável pelo time de checkout e pagamentos." }
-    ],
-    formacao: [
-      { curso: "MBA em Gestão de Produtos", instituicao: "FIAP", ano: "2021" },
-      { curso: "Publicidade e Propaganda", instituicao: "USP", ano: "2017" }
-    ],
-    projetos: [],
-    certificacoes: ["CSPO"],
-    idiomas: [{ idioma: "Inglês", nivel: "Fluente" }],
-    areaInteresses: ["Product-Led Growth", "UX Research", "E-commerce"]
-  },
-  {
-    id: 12,
-    nome: "Tiago Lacerda",
-    foto: "https://placehold.co/100x100/D4A885/FFFFFF?text=TL",
-    cargo: "Desenvolvedor Front-End",
-    resumo: "Focado em performance e acessibilidade web (a11y). 4 anos de experiência com Vue.js e Nuxt.",
-    localizacao: "Curitiba/PR",
-    area: "Desenvolvimento",
-    habilidadesTecnicas: ["Vue.js", "Nuxt.js", "JavaScript", "CSS", "Acessibilidade (a11y)", "Testes (Jest)"],
-    softSkills: ["Colaboração", "Curiosidade", "Empatia"],
-    experiencias: [
-      { empresa: "WebFlowers", cargo: "Desenvolvedor Front-End", inicio: "2019-08", fim: "Atual", descricao: "Criação de componentes reutilizáveis e acessíveis." }
-    ],
-    formacao: [
-      { curso: "Design Digital", instituicao: "PUCPR", ano: "2018" }
-    ],
-    projetos: [],
-    certificacoes: [],
-    idiomas: [{ idioma: "Inglês", nivel: "Avançado" }],
-    areaInteresses: ["Acessibilidade", "Web Performance", "Design Systems"]
-  }
-  // Você pode copiar e colar os perfis acima para chegar em 60+
-];
-
-// --- Componentes da Aplicação ---
-
-/**
- * Componente: Navbar
- * Descrição: Barra de navegação principal.
- */
 function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode }) {
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -353,22 +78,32 @@ function NavItem({ children, onClick, href }) {
  */
 function Homepage({ setPage, darkMode }) {
   return (
-    <div className={`flex items-center justify-center h-screen min-h-[700px] pt-16 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}>
-      <div className="text-center p-8">
-        <h2 className="text-5xl md:text-6xl font-extrabold mb-6">
-          Encontre os Profissionais do Futuro, Hoje.
-        </h2>
-        <p className={`text-xl md:text-2xl mb-10 max-w-3xl mx-auto ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-          A SkillSync conecta você a uma rede exclusiva de talentos verificados em tecnologia, design e dados.
-        </p>
-        <button
-          onClick={() => setPage('profissionais')}
-          className="bg-purple-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-purple-700 transition-transform hover:scale-105"
-        >
-          Explorar Profissionais
-        </button>
+    <div className={`h-screen min-h-[700px] pt-16 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}>
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between h-full px-4">
+        <div className="md:w-1/2 text-center md:text-left p-8">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+            Encontre os Profissionais do Futuro, Hoje.
+          </h2>
+          <p className={`text-lg md:text-xl mb-8 max-w-2xl ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            A SkillSync conecta você a uma rede exclusiva de talentos verificados em tecnologia, design e dados.
+          </p>
+          <button
+            onClick={() => setPage('profissionais')}
+            className="bg-purple-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-purple-700 transition-transform hover:scale-105"
+          >
+            Explorar Profissionais
+          </button>
+        </div>
+
+        {/* Imagem hero à direita em telas médias/maiores */}
+        <div className="hidden md:block md:w-1/2 p-8">
+          <img
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80&auto=format&fit=crop"
+            alt="Profissionais trabalhando" 
+            className="mx-auto rounded-xl shadow-2xl w-full max-w-lg object-cover"
+          />
+        </div>
       </div>
-      {/* Aqui você pode adicionar a imagem de fundo via CSS ou <img> */}
     </div>
   );
 }
@@ -475,7 +210,7 @@ function ProfissionaisPage({ setModalProfile, darkMode }) {
   const [filterArea, setFilterArea] = useState('');
   const [filterCidade, setFilterCidade] = useState('');
   
-  const filteredProfissionais = mockProfissionais.filter(p => {
+  const filteredProfissionais = profissionaisData.filter(p => {
     const nameMatch = p.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
                       p.cargo.toLowerCase().includes(searchTerm.toLowerCase());
     const areaMatch = filterArea === '' || p.area === filterArea;
@@ -799,7 +534,12 @@ function ProfileSection({ title, children }) {
 function Footer({ darkMode }) {
   return (
     <footer id="footer" className={`py-16 px-8 ${darkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-800 text-gray-200'}`}>
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto mb-8 px-4 md:px-0">
+        <p className={`text-xl md:text-2xl font-semibold text-left md:text-left ${darkMode ? 'text-gray-300' : 'text-gray-200'}`}>
+          Entre em contato conosco a partir dos links abaixo
+        </p>
+      </div>
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 px-4 md:px-12">
         <div>
           <h3 className="text-2xl font-bold mb-4 text-white">SkillSync</h3>
           <p>Conectando talentos, impulsionando o futuro.</p>
