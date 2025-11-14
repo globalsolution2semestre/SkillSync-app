@@ -3,12 +3,21 @@ import { profissionaisData } from './data/profissionais';
 import ProfilePage from './components/ProfilePage';
 
 function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const handleLogout = () => {
     setIsLoggedIn(false);
     setPage('home');
+    setMobileOpen(false);
+  };
+
+  const openProfile = () => {
+    if (selectedProfile) setPage('profile');
+    setMobileOpen(false);
   };
 
   return (
+    <>
     <nav className={`fixed top-0 left-0 right-0 z-50 px-4 py-4 md:px-8 shadow-md transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'}`}>
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <h1 
@@ -32,7 +41,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
         <div className="flex items-center space-x-4">
           {!isLoggedIn ? (
             <button
-              onClick={() => setPage('login')}
+              onClick={() => { setPage('login'); setMobileOpen(false); }}
               className="bg-purple-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
             >
               Entrar
@@ -46,7 +55,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
                   alt={selectedProfile.nome}
                   onClick={() => {
                     // já deve existir selectedProfile; navega para a página de perfil
-                    setPage('profile');
+                    openProfile();
                   }}
                   className={`w-10 h-10 rounded-full object-cover cursor-pointer ring-2 ${darkMode ? 'ring-gray-700' : 'ring-white'}`}
                 />
@@ -68,11 +77,52 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
             </>
           )}
           <div className="md:hidden">
-            {/* Menu Hamburguer (pode ser implementado) */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Abrir menu"
+              className={`p-2 rounded-md ${darkMode ? 'text-white' : 'text-gray-700'}`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
       </div>
     </nav>
+
+    {/* Mobile menu panel */}
+    {mobileOpen && (
+      <div className={`md:hidden fixed inset-0 z-40 ${darkMode ? 'bg-black/40' : 'bg-black/20'}`} onClick={() => setMobileOpen(false)}>
+        <div onClick={(e) => e.stopPropagation()} className={`absolute top-16 left-4 right-4 p-4 rounded-lg ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} shadow-lg`}>
+          <div className="flex flex-col space-y-3">
+            <button onClick={() => { setPage('profissionais'); setMobileOpen(false); }} className="text-left font-medium">Profissionais</button>
+            <button onClick={() => { setPage('porque'); setMobileOpen(false); }} className="text-left font-medium">Porque o SkillSync?</button>
+            <a href="#footer" onClick={() => setMobileOpen(false)} className="text-left font-medium">Suporte</a>
+            <button onClick={() => { toggleDarkMode(); setMobileOpen(false); }} className="text-left">{darkMode ? 'Modo claro' : 'Modo escuro'}</button>
+            {!isLoggedIn ? (
+              <button onClick={() => { setPage('login'); setMobileOpen(false); }} className="bg-purple-600 text-white px-3 py-2 rounded">Entrar</button>
+            ) : (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  {selectedProfile ? (
+                    <img src={selectedProfile.foto} alt={selectedProfile.nome} onClick={openProfile} className="w-10 h-10 rounded-full object-cover cursor-pointer" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">?</div>
+                  )}
+                  <div>
+                    <div className="font-semibold">{selectedProfile ? selectedProfile.nome : 'Perfil'}</div>
+                    <div className="text-sm text-gray-500">Ver perfil</div>
+                  </div>
+                </div>
+                <button onClick={handleLogout} className="bg-red-500 text-white px-3 py-2 rounded">Sair</button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
 
@@ -232,7 +282,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
  * Componente: ProfissionaisPage
  * Descrição: Página que lista todos os profissionais.
  */
-function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setPage }) {
+function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles, toggleConnect }) {
   // Estados para filtros (pode ser expandido)
   const [searchTerm, setSearchTerm] = useState('');
   const [filterArea, setFilterArea] = useState('');
@@ -306,6 +356,8 @@ function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setP
               darkMode={darkMode}
               setSelectedProfile={setSelectedProfile}
               setPage={setPage}
+              connectedProfiles={connectedProfiles}
+              toggleConnect={toggleConnect}
             />
           ))}
         </div>
@@ -326,7 +378,7 @@ function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setP
  * Componente: ProfessionalCard
  * Descrição: Card individual de um profissional na lista.
  */
-function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfile, setPage }) {
+function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles = [], toggleConnect }) {
   return (
     <div className={`p-6 rounded-lg shadow-lg transition-transform hover:scale-[1.02] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
       <div className="flex items-center mb-4">
@@ -368,8 +420,11 @@ function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfi
         >
           Ver Perfil
         </button>
-        <button className={`flex-1 px-4 py-2 rounded-lg font-semibold transition-colors ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'}`}>
-          Conectar
+        <button
+          onClick={() => toggleConnect && toggleConnect(profile.id)}
+          className={`${connectedProfiles && connectedProfiles.includes(profile.id) ? 'flex-1 bg-green-600 text-white px-4 py-2 rounded-lg font-semibold' : 'flex-1 px-4 py-2 rounded-lg font-semibold transition-colors ' + (darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300')}`}
+        >
+          {connectedProfiles && connectedProfiles.includes(profile.id) ? 'Conectado' : 'Conectar'}
         </button>
       </div>
     </div>
@@ -380,9 +435,9 @@ function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfi
  * Componente: ProfileModal
  * Descrição: Modal com os detalhes do profissional (simulando image_82f4da.png).
  */
-function ProfileModal({ profile, closeModal, darkMode }) {
+function ProfileModal({ profile, closeModal, darkMode, openWithMessage }) {
   const [message, setMessage] = useState('');
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(!!openWithMessage);
   const [recommended, setRecommended] = useState(false);
   const [messageSent, setMessageSent] = useState(false);
 
@@ -404,6 +459,10 @@ function ProfileModal({ profile, closeModal, darkMode }) {
     setTimeout(() => setRecommended(false), 3000); // Reseta após 3s
   };
 
+  useEffect(() => {
+    if (openWithMessage) setShowForm(true);
+  }, [openWithMessage]);
+
   if (!profile) return null;
 
   return (
@@ -412,7 +471,7 @@ function ProfileModal({ profile, closeModal, darkMode }) {
       onClick={closeModal}
     >
       <div 
-        className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl p-8 shadow-2xl ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}
+        className={`relative w-full max-w-xl sm:max-w-3xl md:max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl p-6 sm:p-8 shadow-2xl ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}
         onClick={(e) => e.stopPropagation()} // Impede o fechamento ao clicar dentro do modal
       >
         <button 
@@ -427,11 +486,11 @@ function ProfileModal({ profile, closeModal, darkMode }) {
           <img 
             src={profile.foto} 
             alt={profile.nome} 
-            className="w-32 h-32 rounded-full mr-0 md:mr-8 mb-4 md:mb-0 border-4 border-purple-500"
+            className="w-16 h-16 md:w-32 md:h-32 rounded-full mr-0 md:mr-8 mb-4 md:mb-0 border-4 border-purple-500"
           />
-          <div>
-            <h2 className="text-4xl font-bold">{profile.nome}</h2>
-            <p className="text-2xl text-purple-500 dark:text-purple-300 mb-2">{profile.cargo}</p>
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl md:text-4xl font-bold">{profile.nome}</h2>
+            <p className="text-lg md:text-2xl text-purple-500 dark:text-purple-300 mb-2">{profile.cargo}</p>
             <div className="flex flex-wrap gap-2">
               <span className={`px-3 py-1 rounded-full text-sm font-medium ${darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-800'}`}>
                 {profile.area}
@@ -628,6 +687,12 @@ export default function App() {
   // Estado para Dark Mode
   const [darkMode, setDarkMode] = useState(false);
 
+  // Estado para conexões (simulado)
+  const [connectedProfiles, setConnectedProfiles] = useState([]);
+
+  // Estado para abrir modal já com o formulário de mensagem
+  const [modalOpenWithMessage, setModalOpenWithMessage] = useState(false);
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -638,18 +703,25 @@ export default function App() {
   
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
+  const toggleConnect = (profileId) => {
+    setConnectedProfiles(prev => {
+      if (prev.includes(profileId)) return prev.filter(id => id !== profileId);
+      return [...prev, profileId];
+    });
+  };
+
   const renderPage = () => {
     switch (page) {
       case 'home':
         return <Homepage setPage={setPage} darkMode={darkMode} />;
       case 'profissionais':
-        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} />;
+        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} />;
       case 'porque':
         return <PorqueSkillSync darkMode={darkMode} />;
       case 'login':
         return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
       case 'profile':
-        return <ProfilePage profile={selectedProfile} darkMode={darkMode} setPage={setPage} />;
+        return <ProfilePage profile={selectedProfile} darkMode={darkMode} setPage={setPage} setModalProfile={setModalProfile} setModalOpenWithMessage={setModalOpenWithMessage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} />;
       default:
         return <Homepage setPage={setPage} darkMode={darkMode} />;
     }
@@ -676,8 +748,9 @@ export default function App() {
       {modalProfile && (
         <ProfileModal 
           profile={modalProfile} 
-          closeModal={() => setModalProfile(null)}
+          closeModal={() => { setModalProfile(null); setModalOpenWithMessage(false); }}
           darkMode={darkMode}
+          openWithMessage={modalOpenWithMessage}
         />
       )}
     </div>
