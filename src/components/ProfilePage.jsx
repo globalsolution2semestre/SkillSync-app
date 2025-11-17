@@ -52,7 +52,7 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
             <div className="md:col-span-2">
               <div className={`${darkMode ? 'bg-gray-800' : 'bg-gray-50'} p-4 rounded-lg`}>
                 <h3 className="font-semibold mb-2">Buscando emprego</h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Cargos de Estagiário de TI e Engenheiro de software júnior</p>
+                <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-900'}`}>Cargos de Estagiário de TI e Engenheiro de software júnior</p>
                 <a className="text-sm text-teal-600 hover:underline mt-2 inline-block">Exibir detalhes</a>
               </div>
 

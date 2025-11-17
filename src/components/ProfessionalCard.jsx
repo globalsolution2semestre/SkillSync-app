@@ -13,12 +13,12 @@ function ProfessionalCard({ professional, darkMode, onViewProfile, onMessage }) 
           <h3 className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>
             {professional.nome}
           </h3>
-          <p className={`text-sm ${darkMode ? 'text-purple-400' : 'text-purple-600'}`}>
+          <p className={`text-sm ${darkMode ? 'text-purple-400' : 'text-purple-700 font-medium'}`}>
             {professional.cargo}
           </p>
         </div>
       </div>
-      <p className={`text-sm mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+      <p className={`text-sm mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-700'} leading-6`}>
         {professional.resumo}
       </p>
       <div className="mt-3 flex items-center gap-2 mb-3">
@@ -27,7 +27,7 @@ function ProfessionalCard({ professional, darkMode, onViewProfile, onMessage }) 
         }`}>
           {professional.area}
         </span>
-        <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+        <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
           {professional.localizacao}
         </span>
       </div>

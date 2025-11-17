@@ -1,1 +1,18 @@
 @import 'tailwindcss';
+
+/* Accessibility: soften the bright white used in light mode to reduce eye strain.
+	 These overrides only apply when the `dark` class isn't present on <html>.
+	 Using higher specificity and `!important` ensures utility classes are visually adjusted
+	 without changing every component. If you prefer a Tailwind theme change,
+	 we can add these colors in `tailwind.config.js` instead. */
+
+:root {
+	--soft-white: #f7f8f9; /* slightly warm/soft white */
+	--soft-gray-50: #f8f9fa; /* slightly off-white for gray-50 utilities */
+}
+
+:not(.dark) .bg-white { background-color: var(--soft-white) !important; }
+:not(.dark) .bg-gray-50 { background-color: var(--soft-gray-50) !important; }
+
+/* Also adjust ring/outline white used for focus/ring visuals when in light mode */
+:not(.dark) .ring-white { box-shadow: 0 0 0 3px rgba(247,248,249,0.9) !important; }
