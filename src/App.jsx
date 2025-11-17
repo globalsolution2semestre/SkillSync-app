@@ -313,9 +313,11 @@ function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setP
   });
 
   return (
-    <div className={`pt-24 pb-16 px-4 md:px-8 min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-800'}`}>
+    <div className={`pt-24 pb-20 px-4 md:px-8 min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-purple-50 text-gray-900'}`}>
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-4">Encontre os Melhores Profissionais</h2>
+        <h2 className={`text-4xl font-bold text-center mb-6 ${darkMode ? 'text-white' : 'text-purple-900'}`}>
+          Encontre os Melhores Profissionais
+        </h2>
         <p className={`text-lg text-center mb-10 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
           Explore uma rede de profissionais talentosos em diversas áreas e tecnologias.
         </p>
