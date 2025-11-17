@@ -242,11 +242,24 @@ function PorqueSkillSync({ darkMode }) {
 }
 
 function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
+  const [showPassword, setShowPassword] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value.trim();
     const password = e.target.password.value;
 
+    // First, try to match a local professor evaluator account by localEmail/localPassword
+    const localProf = profissionaisData.find(p => p.localEmail === email && p.localPassword === password);
+    if (localProf) {
+      setIsLoggedIn(true);
+      // Use the embedded local snapshot (no backend)
+      const merged = { ...localProf, ...(localProf.linkedinSnapshot || {}), isEvaluator: !!localProf.isEvaluator };
+      setSelectedProfile(merged);
+      setPage('profile');
+      return;
+    }
+
+    // DEV professor account (institutional)
     const DEV_USER_EMAIL = 'professorfiap@skillsync.com';
     const DEV_USER_PASSWORD = 'ProfFiap@2025';
 
@@ -256,7 +269,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
       setSelectedProfile(prof);
       setPage('profile');
     } else {
-      alert('Credenciais inválidas. Use a conta do professor para acessar.');
+      alert('Credenciais inválidas. Use a conta institucional do professor para acessar.');
     }
   };
 
@@ -284,14 +297,34 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
 
           <div>
             <label className="block text-sm font-medium mb-2" htmlFor="password">Senha</label>
-            <input
-              name="password"
-              id="password"
-              type="password"
-              placeholder="Senha"
-              className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
-              required
-            />
+            <div className="relative">
+              <input
+                name="password"
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Senha"
+                className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'} pr-12`}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white"
+                aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+              >
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10a9.98 9.98 0 012.09-5.8M3 3l18 18" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.88 9.88A3 3 0 0114.12 14.12" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9a3 3 0 100 6 3 3 0 000-6z" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
 
           <button type="submit" className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-teal-500 text-white font-semibold hover:opacity-95 transition">
@@ -439,11 +472,10 @@ function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfi
       </div>
         <div className="flex gap-4">
         <button
-          onClick={() => {
-            // If a professor is logged in with the institutional account, do NOT replace their profile.
+            onClick={() => {
+            // If a professor evaluator is logged in, do NOT replace their profile.
             // Instead, open a modal to view the clicked profile.
-            const professorEmail = 'professorfiap@skillsync.com';
-            const isProfessorViewing = isLoggedIn && currentProfile && (currentProfile.email === professorEmail || currentProfile.id === 61);
+            const isProfessorViewing = isLoggedIn && currentProfile && !!currentProfile.isEvaluator;
 
             if (isProfessorViewing) {
               if (setModalProfile) setModalProfile(profile);
