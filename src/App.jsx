@@ -473,11 +473,14 @@ function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfi
         <div className="flex gap-4">
         <button
             onClick={() => {
-            // If a professor evaluator is logged in, do NOT replace their profile.
-            // Instead, open a modal to view the clicked profile.
-            const isProfessorViewing = isLoggedIn && currentProfile && !!currentProfile.isEvaluator;
+            // If the institutional professor is logged in, do NOT replace their profile.
+            // Instead, open a modal to view the clicked profile. The institutional
+            // professor is identified by email or by id (61).
+            const isInstitutionalProfessor = isLoggedIn && currentProfile && (
+              (currentProfile.email && currentProfile.email === 'professorfiap@skillsync.com') || currentProfile.id === 61
+            );
 
-            if (isProfessorViewing) {
+            if (isInstitutionalProfessor) {
               if (setModalProfile) setModalProfile(profile);
             } else {
               if (setSelectedProfile && setPage) {
