@@ -722,8 +722,8 @@ export default function App() {
   // Estado para perfil selecionado (página de perfil após login)
   const [selectedProfile, setSelectedProfile] = useState(null);
   
-  // Estado para Dark Mode
-  const [darkMode, setDarkMode] = useState(false);
+  // Estado para Dark Mode (padrão: true)
+  const [darkMode, setDarkMode] = useState(true);
 
   // Estado para conexões (simulado)
   const [connectedProfiles, setConnectedProfiles] = useState([]);
