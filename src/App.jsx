@@ -188,12 +188,12 @@ function Homepage({ setPage, darkMode }) {
 
 function ValuePropCard({ title, description, darkMode }) {
   return (
-    <div className="relative bg-purple-50 dark:bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col items-center text-center">
-      <div className={`absolute left-1/2 -top-5 transform -translate-x-1/2 w-10 h-10 rounded-full ${darkMode ? 'bg-purple-600' : 'bg-purple-600'} flex items-center justify-center text-white shadow-md`}>
-        <span className="text-lg font-bold">•</span>
+    <div className="relative bg-purple-50 dark:bg-gray-800 p-12 rounded-lg shadow-lg flex flex-col items-center text-center transform-gpu transition-transform hover:scale-[1.02]">
+      <div className={`absolute left-1/2 -top-6 transform -translate-x-1/2 w-12 h-12 rounded-full ${darkMode ? 'bg-purple-600' : 'bg-purple-600'} flex items-center justify-center text-white shadow-md`}>
+        <span className="text-xl font-bold">•</span>
       </div>
-      <h3 className="text-2xl font-semibold mb-3 text-purple-800 dark:text-purple-300">{title}</h3>
-      <p className="text-gray-700 dark:text-gray-300">{description}</p>
+      <h3 className="text-3xl md:text-4xl font-semibold mb-4 text-purple-800 dark:text-purple-300 leading-tight">{title}</h3>
+      <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 max-w-xl">{description}</p>
     </div>
   );
 }
@@ -667,41 +667,39 @@ function ProfileSection({ title, children }) {
  * Componente: Footer
  * Descrição: Rodapé do site, alvo do link "Suporte".
  */
-function Footer({ darkMode }) {
+function Footer({ darkMode, setPage }) {
   return (
-    <footer id="footer" className={`py-16 px-8 ${darkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-800 text-gray-200'}`}>
+    <footer id="footer" className={`py-20 px-8 ${darkMode ? 'bg-gray-900 text-gray-300' : 'bg-gray-800 text-gray-200'}`}>
       <div className="max-w-7xl mx-auto mb-8 px-4 md:px-0">
-        <p className={`text-xl md:text-2xl font-semibold text-left md:text-left ${darkMode ? 'text-gray-400' : 'text-gray-200'}`}>
-          Entre em contato conosco a partir dos links abaixo
+        <p className={`text-2xl md:text-3xl font-semibold text-left md:text-left ${darkMode ? 'text-gray-400' : 'text-gray-200'}`}>
         </p>
       </div>
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 px-4 md:px-12">
         <div>
-          <h3 className="text-2xl font-bold mb-4 text-white hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2">SkillSync</h3>
+          <h3 className="text-3xl md:text-4xl font-bold mb-4 text-white hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2">SkillSync</h3>
           <p>Conectando talentos, impulsionando o futuro.</p>
         </div>
         <div>
-          <h4 className="text-lg font-semibold mb-4 text-white">Links Rápidos</h4>
+          <h4 className="text-xl md:text-2xl font-semibold mb-4 text-white">Links Rápidos</h4>
           <ul>
-            <li className="mb-2"><a href="#" className="hover:text-purple-300 hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-2 decoration-2">Profissionais</a></li>
-            <li className="mb-2"><a href="#" className="hover:text-purple-300 hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-2 decoration-2">Porque o SkillSync?</a></li>
-            <li className="mb-2"><a href="#" className="hover:text-purple-300 ">Criar Perfil</a></li>
+            <li className="mb-2"><a href="#" onClick={(e) => { e.preventDefault(); if (setPage) setPage('profissionais'); }} className="hover:text-purple-300 hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-2 decoration-2 text-base md:text-lg">Profissionais</a></li>
+            <li className="mb-2"><a href="#" onClick={(e) => { e.preventDefault(); if (setPage) setPage('porque'); }} className="hover:text-purple-300 hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-2 decoration-2 text-base md:text-lg">Porque o SkillSync?</a></li>
+            <li className="mb-2"><a href="#" className="hover:text-purple-300 text-base md:text-lg">Criar Perfil</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-lg font-semibold mb-4 text-white hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2">Suporte</h4>
-          <p className="mb-2">Email: <a href="mailto:suporte@skillsync.com" className="hover:text-purple-300">suporte@skillsync.com</a></p>
-          <p className="mb-4">Telefone: (11) 99999-9999</p>
+          <h4 className="text-xl md:text-2xl font-semibold mb-4 text-white hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2">Suporte</h4>
+          <p className="mb-2 text-base md:text-lg">Email: <a href="mailto:suporte@skillsync.com" className="hover:text-purple-300">suporte@skillsync.com</a></p>
+          <p className="mb-4 text-base md:text-lg">Telefone: (11) 99999-9999</p>
           <div className="flex space-x-4">
             {/* Adicionar ícones de redes sociais */}
-            <a href="#" className="hover:text-purple-300">Twitter</a>
-            <a href="#" className="hover:text-purple-300">LinkedIn</a>
-            <a href="#" className="hover:text-purple-300">Instagram</a>
+            <a href="https://github.com/globalsolution2semestre" target="_blank" rel="noopener noreferrer" className="hover:text-purple-300 text-lg">Github</a>
+            <a href="https://www.linkedin.com/school/fiap/posts/?feedView=all" target="_blank" rel="noopener noreferrer" className="hover:text-purple-300 text-lg">LinkedIn</a>
           </div>
         </div>
       </div>
       <div className="text-center mt-12 border-t border-gray-700 pt-8">
-        <p>&copy; {new Date().getFullYear()} SkillSync. Todos os direitos reservados.</p>
+        <p className="text-base md:text-lg font-medium">&copy; {new Date().getFullYear()} SkillSync. Todos os direitos reservados.</p>
       </div>
     </footer>
   );
@@ -783,7 +781,8 @@ export default function App() {
         {renderPage()}
       </main>
       
-      <Footer darkMode={darkMode} />
+      <SupportCallout darkMode={darkMode} />
+      <Footer darkMode={darkMode} setPage={setPage} />
       
       {modalProfile && (
         <ProfileModal 
@@ -793,6 +792,27 @@ export default function App() {
           openWithMessage={modalOpenWithMessage}
         />
       )}
+    </div>
+  );
+}
+
+// Componente: SupportCallout
+// Descrição: Bloco estilizado que direciona visualmente para o rodapé (footer)
+function SupportCallout({ darkMode }) {
+  return (
+    <div className="max-w-7xl mx-auto px-4 md:px-0 -mt-12 mb-12">
+      <div className={`rounded-2xl p-6 md:p-8 shadow-lg flex items-center justify-between gap-4 ${darkMode ? 'bg-gray-800 text-gray-100' : 'bg-purple-600 text-white'} relative z-20`}>
+        <div>
+          <h4 className="text-lg md:text-xl font-semibold">Precisa de ajuda?</h4>
+          <p className="text-sm opacity-90 mt-1">Nosso suporte está pronto para ajudar com dúvidas e problemas.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <a href="#footer" className={`${darkMode ? 'text-purple-300 bg-transparent border border-purple-300 px-4 py-2 rounded-lg' : 'bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold'} inline-flex items-center gap-2 transition-all hover:scale-105`}> 
+            Suporte
+            <svg className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
