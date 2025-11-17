@@ -60,11 +60,13 @@ Siga os passos abaixo para rodar a aplicação em sua máquina:
     ```
 5.  Abra seu navegador e acesse `http://localhost:5173` (ou a porta indicada no seu terminal).
 
-## 🔑 Autenticação (Teste)
+## 🔑 Login para autenticação
 
-O projeto possui uma tela de login simulada para fins de demonstração.
+Email: professorfiap@skillsync.com
 
-Para testar, **não é necessário alterar os dados** que já vêm preenchidos nos campos de usuário e senha. Basta clicar no botão de login para acessar a aplicação.
+## *** Senha para autenticação
+
+Senha: ProfFiap@2025
 
 ## 🧑‍💻 Autores
 
