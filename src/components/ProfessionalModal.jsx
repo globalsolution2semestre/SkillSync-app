@@ -45,7 +45,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
 
           <div className="flex flex-wrap gap-2 mb-4">
             <span className={`px-3 py-1 rounded-full text-sm ${
-              darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-800'
+              darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-50 text-purple-800'
             }`}>
               {professional.area}
             </span>
@@ -113,7 +113,7 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
                 <span
                   key={index}
                   className={`px-3 py-2 rounded-lg ${
-                    darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-800'
+                    darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-50 text-purple-800'
                   }`}
                 >
                   {skill}
@@ -210,11 +210,11 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
               <div className="flex flex-wrap gap-2">
                 {professional.certificacoes.map((cert, index) => (
                   <span
-                    key={index}
-                    className={`px-3 py-2 rounded-lg ${
-                      darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
+                      key={index}
+                      className={`px-3 py-2 rounded-lg ${
+                        darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'
+                      }`}
+                    >
                     {cert}
                   </span>
                 ))}
@@ -256,11 +256,11 @@ function ProfessionalModal({ professional, darkMode, onClose, onRecommend, onMes
               <div className="flex flex-wrap gap-2">
                 {professional.areaInteresses.map((interesse, index) => (
                   <span
-                    key={index}
-                    className={`px-3 py-2 rounded-lg ${
-                      darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-800'
-                    }`}
-                  >
+                      key={index}
+                      className={`px-3 py-2 rounded-lg ${
+                        darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-50 text-purple-800'
+                      }`}
+                    >
                     {interesse}
                   </span>
                 ))}

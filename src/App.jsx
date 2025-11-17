@@ -129,7 +129,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
 // Sub-componente para os itens da Navbar
 function NavItem({ children, onClick, href, underline }) {
   const base = "font-medium text-lg hover:text-purple-600 transition-colors cursor-pointer";
-  const underlineClasses = underline ? 'hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2' : '';
+    const underlineClasses = underline ? 'hover:underline decoration-purple-500 dark:decoration-purple-300 underline-offset-4 decoration-2' : '';
 
   const classes = `${base} ${underlineClasses}`.trim();
 
@@ -216,7 +216,7 @@ function PorqueSkillSync({ darkMode }) {
 
 function ValuePropCard({ title, description }) {
   return (
-    <div className="bg-purple-100 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+    <div className="bg-purple-50 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
       <h3 className="text-2xl font-semibold mb-3 text-purple-800 dark:text-purple-300">{title}</h3>
       <p className="text-gray-700 dark:text-gray-300">{description}</p>
     </div>
@@ -230,48 +230,63 @@ function ValuePropCard({ title, description }) {
 function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Em um app real, aqui haveria uma chamada de API
-    setIsLoggedIn(true);
-    // Seleciona o primeiro profissional como o perfil a ser exibido (simulado)
-    setSelectedProfile(profissionaisData[0] || null);
-    setPage('profile'); // Redireciona para a página de perfil após o login
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
+
+    // Credenciais simuladas para ambiente de desenvolvimento
+    const DEV_USER_EMAIL = 'professorfiap@skillsync.com';
+    const DEV_USER_PASSWORD = 'ProfFiap@2025';
+
+    if (email === DEV_USER_EMAIL && password === DEV_USER_PASSWORD) {
+      const prof = profissionaisData.find(p => p.email === email) || profissionaisData.find(p => p.id === 61) || profissionaisData[0] || null;
+      setIsLoggedIn(true);
+      setSelectedProfile(prof);
+      setPage('profile');
+    } else {
+      // Bloqueia acesso para outros emails (conforme solicitado)
+      alert('Credenciais inválidas. Use a conta do professor para acessar.');
+    }
   };
 
   return (
-    <div className={`flex items-center justify-center min-h-screen pt-16 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
-      <div className={`p-10 rounded-xl shadow-2xl w-full max-w-md ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-        <h2 className="text-3xl font-bold text-center mb-8">Bem-vindo(a) de volta!</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2" htmlFor="email">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              defaultValue="usuario@skillsync.com"
-              className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-300 text-gray-900'}`}
+    <div className={`min-h-screen flex items-center justify-center px-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
+      <div className={`w-full max-w-md ${darkMode ? 'bg-gray-800/70' : 'bg-white'} backdrop-blur-md p-8 rounded-2xl shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-600 text-white font-bold text-lg mb-3">SS</div>
+          <h2 className="text-2xl font-semibold">Entrar no Painel</h2>
+          <p className="text-sm text-gray-400 mt-1">Acesso restrito a professores (conta institucional)</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2" htmlFor="email">Email institucional</label>
+            <input
+              name="email"
+              id="email"
+              type="email"
+              placeholder="professorfiap@skillsync.com"
+              className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
+              required
             />
           </div>
-          <div className="mb-6">
+
+          <div>
             <label className="block text-sm font-medium mb-2" htmlFor="password">Senha</label>
-            <input 
-              type="password" 
-              id="password" 
-              defaultValue="123456"
-              className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-300 text-gray-900'}`}
+            <input
+              name="password"
+              id="password"
+              type="password"
+              placeholder="Senha"
+              className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
+              required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
-          >
+
+          <button type="submit" className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-teal-500 text-white font-semibold hover:opacity-95 transition">
             Entrar
           </button>
-          <p className="text-center mt-6 text-sm">
-            Não tem uma conta? 
-            <span className="text-purple-600 hover:underline cursor-pointer ml-1">
-              Crie um perfil (simulado)
-            </span>
-          </p>
+
+          <p className="text-xs text-center text-gray-400">Credenciais de desenvolvimento: use a conta institucional do professor. Não compartilhe em produção.</p>
         </form>
       </div>
     </div>
@@ -282,7 +297,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
  * Componente: ProfissionaisPage
  * Descrição: Página que lista todos os profissionais.
  */
-function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles, toggleConnect }) {
+function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles, toggleConnect, isLoggedIn, selectedProfile }) {
   // Estados para filtros (pode ser expandido)
   const [searchTerm, setSearchTerm] = useState('');
   const [filterArea, setFilterArea] = useState('');
@@ -358,6 +373,8 @@ function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setP
               setPage={setPage}
               connectedProfiles={connectedProfiles}
               toggleConnect={toggleConnect}
+              isLoggedIn={isLoggedIn}
+              currentProfile={selectedProfile}
             />
           ))}
         </div>
@@ -378,7 +395,7 @@ function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setP
  * Componente: ProfessionalCard
  * Descrição: Card individual de um profissional na lista.
  */
-function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles = [], toggleConnect }) {
+function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles = [], toggleConnect, isLoggedIn, currentProfile }) {
   return (
     <div className={`p-6 rounded-lg shadow-lg transition-transform hover:scale-[1.02] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
       <div className="flex items-center mb-4">
@@ -409,11 +426,20 @@ function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfi
         <div className="flex gap-4">
         <button
           onClick={() => {
-            if (setSelectedProfile && setPage) {
-              setSelectedProfile(profile);
-              setPage('profile');
-            } else if (setModalProfile) {
-              setModalProfile(profile);
+            // If a professor is logged in with the institutional account, do NOT replace their profile.
+            // Instead, open a modal to view the clicked profile.
+            const professorEmail = 'professorfiap@skillsync.com';
+            const isProfessorViewing = isLoggedIn && currentProfile && (currentProfile.email === professorEmail || currentProfile.id === 61);
+
+            if (isProfessorViewing) {
+              if (setModalProfile) setModalProfile(profile);
+            } else {
+              if (setSelectedProfile && setPage) {
+                setSelectedProfile(profile);
+                setPage('profile');
+              } else if (setModalProfile) {
+                setModalProfile(profile);
+              }
             }
           }}
           className="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
@@ -715,7 +741,7 @@ export default function App() {
       case 'home':
         return <Homepage setPage={setPage} darkMode={darkMode} />;
       case 'profissionais':
-        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} />;
+        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
       case 'porque':
         return <PorqueSkillSync darkMode={darkMode} />;
       case 'login':

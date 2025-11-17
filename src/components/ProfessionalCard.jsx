@@ -23,7 +23,7 @@ function ProfessionalCard({ professional, darkMode, onViewProfile, onMessage }) 
       </p>
       <div className="mt-3 flex items-center gap-2 mb-3">
         <span className={`px-2 py-1 rounded text-xs ${
-          darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-800'
+          darkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-50 text-purple-800'
         }`}>
           {professional.area}
         </span>

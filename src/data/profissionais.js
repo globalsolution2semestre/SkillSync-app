@@ -1280,4 +1280,28 @@ export const profissionaisData = [
     idiomas: [{ idioma: "Inglês", nivel: "Fluente" }],
     areaInteresses: ["Acessibilidade", "Design Inclusivo", "Direitos Digitais"]
   }
+  ,
+  {
+    id: 61,
+    nome: "Professor FIAP",
+    foto: "https://placehold.co/100x100/6EE7B7/FFFFFF?text=PF",
+    cargo: "Professor - FIAP",
+    resumo: "Professor responsável por gerenciar e avaliar conteúdos do curso. Conta institucional FIAP para acesso ao painel docente.",
+    localizacao: "São Paulo/SP",
+    area: "Educação",
+    habilidadesTecnicas: ["Ensino", "Mentoria", "Desenvolvimento Web", "Arquitetura de Software"],
+    softSkills: ["Comunicação", "Didática", "Mentoria"],
+    experiencias: [
+      { empresa: "FIAP", cargo: "Professor", inicio: "2018-02", fim: "Atual", descricao: "Ministração de disciplinas de desenvolvimento e mentoria de projetos." }
+    ],
+    formacao: [
+      { curso: "Mestrado em Engenharia de Software", instituicao: "FIAP", ano: "2016" }
+    ],
+    projetos: [],
+    certificacoes: [],
+    idiomas: [{ idioma: "Português", nivel: "Nativo" }, { idioma: "Inglês", nivel: "Avançado" }],
+    areaInteresses: ["Educação", "Mentoria", "Projetos Acadêmicos"],
+    // Campo adicional para autenticação no ambiente de desenvolvimento
+    email: "professorfiap@skillsync.com"
+  }
 ];

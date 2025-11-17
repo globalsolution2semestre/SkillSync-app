@@ -4,9 +4,9 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
   if (!profile) {
     return (
       <div className={`pt-24 min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
-        <div className="max-w-2xl p-8 rounded-lg bg-gray-800 text-white">
+          <div className="max-w-2xl p-8 rounded-lg bg-gray-800 text-white">
           <p>Perfil não encontrado.</p>
-          <button onClick={() => setPage('home')} className="mt-4 bg-purple-600 px-4 py-2 rounded">Voltar</button>
+          <button onClick={() => setPage('home')} className="mt-4 bg-purple-600 px-4 py-2 rounded text-white">Voltar</button>
         </div>
       </div>
     );
@@ -30,7 +30,7 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
             <div className="w-full text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center items-center md:space-x-4 space-y-2 md:space-y-0 justify-center md:justify-start">
                 <h1 className="text-2xl md:text-3xl font-bold break-words">{profile.nome}</h1>
-                <span className="text-sm px-3 py-1 rounded-full bg-blue-50 text-blue-700">Adicionar selo de verificação</span>
+                <span className="text-sm px-3 py-1 rounded-full bg-purple-50 text-purple-700">Adicionar selo de verificação</span>
                 <div className="ml-auto hidden md:block">
                   <span className="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-800">{profile.area}</span>
                 </div>
@@ -40,7 +40,7 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-2`}>{profile.localizacao} · Informação de contato</p>
 
               <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
-                <button className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-4 py-2 rounded-full font-semibold`}>Tenho interesse em...</button>
+                <button className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-teal-600 hover:bg-teal-700'} text-white px-4 py-2 rounded-full font-semibold`}>Tenho interesse em...</button>
                 <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`}>Adicionar seção ao perfil</button>
                 <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`}>Aprimorar perfil</button>
                 <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`}>Recursos</button>
@@ -53,7 +53,7 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
               <div className={`${darkMode ? 'bg-gray-800' : 'bg-gray-50'} p-4 rounded-lg`}>
                 <h3 className="font-semibold mb-2">Buscando emprego</h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">Cargos de Estagiário de TI e Engenheiro de software júnior</p>
-                <a className="text-sm text-blue-600 hover:underline mt-2 inline-block">Exibir detalhes</a>
+                <a className="text-sm text-teal-600 hover:underline mt-2 inline-block">Exibir detalhes</a>
               </div>
 
               <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} mt-6 p-4 rounded-lg shadow-sm`}>
@@ -89,7 +89,7 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
                       setModalOpenWithMessage(true);
                     }
                   }}
-                  className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-blue-600 hover:bg-blue-700'} w-full text-white px-4 py-2 rounded`}
+                  className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-teal-600 hover:bg-teal-700'} w-full text-white px-4 py-2 rounded`}
                 >Enviar Mensagem</button>
                 <button
                   onClick={() => toggleConnect && toggleConnect(profile.id)}
