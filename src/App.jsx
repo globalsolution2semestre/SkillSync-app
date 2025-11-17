@@ -184,56 +184,69 @@ function Homepage({ setPage, darkMode }) {
   );
 }
 
-/**
- * Componente: PorqueSkillSync
- * Descrição: Seção "Porque o SkillSync".
- */
-function PorqueSkillSync({ darkMode }) {
-  return (
-    <div className={`pt-24 pb-16 px-4 md:px-8 min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-12">
-          Porque escolher a SkillSync?
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <ValuePropCard
-            title="Talentos Verificados"
-            description="Nossa plataforma pré-seleciona profissionais para garantir que você encontre apenas os melhores talentos."
-          />
-          <ValuePropCard
-            title="Conexão Direta"
-            description="Envie mensagens e agende entrevistas diretamente pela plataforma, sem intermediários."
-          />
-          <ValuePropCard
-            title="Foco no Futuro"
-            description="Perfis detalhados com foco em hard e soft skills, prontos para os desafios do amanhã."
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
 
-function ValuePropCard({ title, description }) {
+
+function ValuePropCard({ title, description, darkMode }) {
   return (
-    <div className="bg-purple-50 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+    <div className="relative bg-purple-50 dark:bg-gray-800 p-8 rounded-lg shadow-lg flex flex-col items-center text-center">
+      <div className={`absolute left-1/2 -top-5 transform -translate-x-1/2 w-10 h-10 rounded-full ${darkMode ? 'bg-purple-600' : 'bg-purple-600'} flex items-center justify-center text-white shadow-md`}>
+        <span className="text-lg font-bold">•</span>
+      </div>
       <h3 className="text-2xl font-semibold mb-3 text-purple-800 dark:text-purple-300">{title}</h3>
       <p className="text-gray-700 dark:text-gray-300">{description}</p>
     </div>
   );
 }
 
-/**
- * Componente: LoginPage
- * Descrição: Página de "fake login".
- */
+function PorqueSkillSync({ darkMode }) {
+  return (
+    <div className={`relative pt-24 pb-20 px-4 md:px-8 min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      {/* Decorative blurred background image that fills the section */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80&auto=format&fit=crop')" }}
+          className="absolute inset-0 bg-cover bg-center filter blur-[1px] opacity-30"
+        />
+        <div className={`absolute inset-0 ${darkMode ? 'bg-black/40' : 'bg-white/20'}`} />
+      </div>
+      <div className="max-w-5xl mx-auto">
+        <h2 className={`text-4xl font-bold text-center mb-12 ${darkMode ? 'text-white' : 'text-purple-900'}`}>
+          Porque escolher a SkillSync?
+        </h2>
+
+        <div className="relative">
+          <div className={`hidden md:block absolute left-0 right-0 top-1/2 transform -translate-y-1/2 h-1 ${darkMode ? 'bg-gray-700' : 'bg-purple-100'}`} />
+          <div className={`md:hidden absolute top-0 bottom-0 left-1/2 w-1 transform -translate-x-1/2 ${darkMode ? 'bg-gray-700' : 'bg-purple-100'}`} />
+
+          <div className="grid md:grid-cols-3 gap-8 relative z-10">
+            <ValuePropCard
+              title="Talentos Verificados"
+              description="Nossa plataforma pré-seleciona profissionais para garantir que você encontre apenas os melhores talentos."
+              darkMode={darkMode}
+            />
+            <ValuePropCard
+              title="Conexão Direta"
+              description="Envie mensagens e agende entrevistas diretamente pela plataforma, sem intermediários."
+              darkMode={darkMode}
+            />
+            <ValuePropCard
+              title="Foco no Futuro"
+              description="Perfis detalhados com foco em hard e soft skills, prontos para os desafios do amanhã."
+              darkMode={darkMode}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value.trim();
     const password = e.target.password.value;
 
-    // Credenciais simuladas para ambiente de desenvolvimento
     const DEV_USER_EMAIL = 'professorfiap@skillsync.com';
     const DEV_USER_PASSWORD = 'ProfFiap@2025';
 
@@ -243,7 +256,6 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
       setSelectedProfile(prof);
       setPage('profile');
     } else {
-      // Bloqueia acesso para outros emails (conforme solicitado)
       alert('Credenciais inválidas. Use a conta do professor para acessar.');
     }
   };
