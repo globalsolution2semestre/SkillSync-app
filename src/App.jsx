@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { profissionaisData } from './data/profissionais';
 import ProfilePage from './components/ProfilePage';
+import WhySkillSync from './components/WhySkillSync';
 
 function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -790,7 +791,7 @@ export default function App() {
       case 'profissionais':
         return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
       case 'porque':
-        return <PorqueSkillSync darkMode={darkMode} />;
+        return <WhySkillSync darkMode={darkMode} setPage={setPage} />;
       case 'login':
         return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
       case 'profile':
