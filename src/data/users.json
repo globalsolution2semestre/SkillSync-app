@@ -1,0 +1,212 @@
+[
+  {
+    "id": "gui_araujo",
+    "nome": "Guilherme de Araùjo",
+    "genero": "Masculino",
+    "foto": "https://placehold.co/100x100/6EE7B7/FFFFFF?text=GA",
+    "banner": "",
+    "titulo": "Software Engineer - FIAP | HTML | Tailwind CSS | JavaScript | Node.js | React | Python | C++ | SQL | Agile Methodologies",
+    "cargo": "Engenheiro de Software",
+    "empresa": "FIAP",
+    "resumo": "Estudante de Engenharia de Software com foco em desenvolvimento, inteligência artificial e games. Possuo sólida proficiência em matemática e habilidades em JavaScript, CSS, HTML, Python, C++, React e conhecimento básico em SQL, aplicadas em projetos acadêmicos e desenvolvidas através de um forte espírito de trabalho em equipe. Com uma experiência de 6 meses nos Estados Unidos onde aperfeiçoei meu inglês, estou em busca de oportunidades para aplicar meus conhecimentos, continuar aprendendo e contribuir com soluções inovadoras em tecnologia.",
+    "estado": "São Paulo",
+    "pais": "Brasil",
+    "area": "Desenvolvimento",
+    "seguidores": [],
+    "seguindo": [],
+    "estrelas": [],
+    "competencias": [],
+    "experiencias": [
+      {
+        "empresa": "",
+        "tipo": "",
+        "cargo": "",
+        "inicio": "",
+        "fim": "",
+        "local": "",
+        "descricao": ""
+      }
+    ],
+    "formacao": [
+      {
+        "curso": "Engenharia de Software",
+        "instituicao": "FIAP",
+        "ano": 2025
+      }
+    ],
+    "projetos": [
+      {
+        "titulo": "",
+        "link": "",
+        "descricao": ""
+      }
+    ],
+    "certificacoes": [
+      {
+        "curso": "",
+        "instituicao": "",
+        "duracao": ""
+      }
+    ],
+    "idiomas": [
+      {
+        "idioma": "",
+        "nivel": ""
+      }
+    ],
+    "areainteresses": [],
+    "email": "rm561848@fiap.com.br",
+    "senha": "290905fiap",
+    "aniversario": "2005-09-29",
+    "posts": [
+      {
+        "id": 7,
+        "conteudo": "Você já tentou ensinar um algoritmo de IA a entender a complexidade do código humano? Spoiler: inteligência artificial ainda engatinha diante da nossa criatividade caótica. E aí, IA vai substituir dev ou ser só uma ajudante frustrada? #EngenhariaComAlma #IAnaPrática #CodarÉHumano",
+        "dataTime": "2025-11-17T13:13:00Z",
+        "likes": [],
+        "comentarios": [],
+        "compartilhamentos": []
+      }
+    ]
+  },
+  {
+    "id": "yanbreno",
+    "nome": "Yan Barutti",
+    "genero": "Masculino",
+    "foto": "https://placehold.co/100x100/6EE7B7/FFFFFF?text=YB",
+    "banner": "",
+    "titulo": "Estudante de Engenharia de Software - FIAP | HTML | CSS | JS | Python",
+    "cargo": "Engenheiro de Software",
+    "empresa": "FIAP",
+    "resumo": "",
+    "estado": "São Paulo",
+    "pais": "Brasil",
+    "area": "Desenvolvimento",
+    "seguidores": [],
+    "seguindo": [],
+    "estrelas": [],
+    "competencias": [],
+    "experiencias": [
+      {
+        "empresa": "",
+        "tipo": "",
+        "cargo": "",
+        "inicio": "",
+        "fim": "",
+        "local": "",
+        "descricao": ""
+      }
+    ],
+    "formacao": [
+      {
+        "curso": "Engenharia de Software",
+        "instituicao": "FIAP",
+        "ano": 2025
+      }
+    ],
+    "projetos": [
+      {
+        "titulo": "",
+        "link": "",
+        "descricao": ""
+      }
+    ],
+    "certificacoes": [
+      {
+        "curso": "",
+        "instituicao": "",
+        "duracao": ""
+      }
+    ],
+    "idiomas": [
+      {
+        "idioma": "",
+        "nivel": ""
+      }
+    ],
+    "areainteresses": [],
+    "email": "rm566412@fiap.com.br",
+    "senha": "280906fiap",
+    "aniversario": "2006-09-28",
+    "posts": [
+      {
+        "id": 8,
+        "conteudo": "Aprender JavaScript não é só dominar sintaxe, é enfrentar a mess de paradigmas e frameworks que mudam a cada café. Quem disse que é simples vive na superfície. A profundidade exige coragem e resistência. Quem topa esse desafio de verdade? #DevSemFiltro #JSRealTalk #CodeComAlma",
+        "dataTime": "2025-11-14T01:47:00Z",
+        "likes": [],
+        "comentarios": [],
+        "compartilhamentos": []
+      },
+      {
+        "id": 9,
+        "conteudo": "Aprendi que dominar Python não é só saber sintaxe, é entender que eficiência não sobrevive sem clareza. Por que tanta pressa em otimizar código se o verdadeiro bug é perder a legibilidade? Devs, vamos debater: código bonito importa mais que código rápido? #CodeComAlma #PythonReflexão #EngenhariaDeSoftwareReal",
+        "dataTime": "2025-11-17T17:50:00Z",
+        "likes": [],
+        "comentarios": [],
+        "compartilhamentos": []
+      }
+    ]
+  },
+  {
+    "id": "joao_parizotto",
+    "nome": "João Parizotto",
+    "genero": "Masculino",
+    "foto": "https://placehold.co/100x100/6EE7B7/FFFFFF?text=JP",
+    "banner": "",
+    "titulo": "",
+    "cargo": "",
+    "empresa": "",
+    "resumo": "",
+    "estado": "São Paulo",
+    "pais": "Brasil",
+    "area": "Desenvolvimento",
+    "seguidores": [],
+    "seguindo": [],
+    "estrelas": [],
+    "competencias": [],
+    "experiencias": [
+      {
+        "empresa": "",
+        "tipo": "",
+        "cargo": "",
+        "inicio": "",
+        "fim": "",
+        "local": "",
+        "descricao": ""
+      }
+    ],
+    "formacao": [
+      {
+        "curso": "Engenharia de Software",
+        "instituicao": "FIAP",
+        "ano": 2025
+      }
+    ],
+    "projetos": [
+      {
+        "titulo": "",
+        "link": "",
+        "descricao": ""
+      }
+    ],
+    "certificacoes": [
+      {
+        "curso": "",
+        "instituicao": "",
+        "duracao": ""
+      }
+    ],
+    "idiomas": [
+      {
+        "idioma": "",
+        "nivel": ""
+      }
+    ],
+    "areainteresses": [],
+    "email": "pedrofiap@fiap.com.br",
+    "senha": "010105fiap",
+    "aniversario": "",
+    "posts": []
+  }
+]
+

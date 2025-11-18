@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { profissionaisData } from './data/profissionais';
+import usersData from './data/users.json';
 import ProfilePage from './components/ProfilePage';
 import WhySkillSync from './components/WhySkillSync';
 import Landing from './components/Landing';
@@ -55,10 +56,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
                 <img
                   src={selectedProfile.foto}
                   alt={selectedProfile.nome}
-                  onClick={() => {
-                    // já deve existir selectedProfile; navega para a página de perfil
-                    openProfile();
-                  }}
+                  onClick={() => openProfile()}
                   className={`w-10 h-10 rounded-full object-cover cursor-pointer ring-2 ${darkMode ? 'ring-gray-700' : 'ring-white'}`}
                 />
               ) : (
@@ -249,6 +247,34 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode, modal
     e.preventDefault();
     const email = e.target.email.value.trim();
     const password = e.target.password.value;
+
+    // First, check dedicated users.json (explicit user accounts)
+    if (usersData && Array.isArray(usersData)) {
+      const user = usersData.find(u => u.email === email && u.senha === password);
+      if (user) {
+        setIsLoggedIn(true);
+        const profile = {
+          id: user.id || email,
+          nome: user.nome || email,
+          foto: user.foto || 'https://placehold.co/100x100/CCCCCC/FFFFFF?text=U',
+          cargo: user.cargo || user.titulo || '',
+          resumo: user.resumo || '',
+          localizacao: user.estado ? `${user.estado}/${user.pais || ''}` : (user.localizacao || ''),
+          area: user.area || '',
+          habilidadesTecnicas: user.competencias || [],
+          softSkills: [],
+          experiencias: user.experiencias || [],
+          formacao: user.formacao || [],
+          projetos: user.projetos || [],
+          certificacoes: user.certificacoes || [],
+          idiomas: user.idiomas || [],
+          email: user.email
+        };
+        setSelectedProfile(profile);
+        setPage('profile');
+        return;
+      }
+    }
 
     // First, try to match a local professor evaluator account by localEmail/localPassword
     const localProf = profissionaisData.find(p => p.localEmail === email && p.localPassword === password);
@@ -849,7 +875,7 @@ export default function App() {
       case 'login':
         return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
       case 'profile':
-        return <ProfilePage profile={selectedProfile} darkMode={darkMode} setPage={setPage} setModalProfile={setModalProfile} setModalOpenWithMessage={setModalOpenWithMessage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} />;
+        return <ProfilePage profile={selectedProfile} currentUser={selectedProfile} setSelectedProfile={setSelectedProfile} darkMode={darkMode} setPage={setPage} setModalProfile={setModalProfile} setModalOpenWithMessage={setModalOpenWithMessage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} />;
       default:
         return <Homepage setPage={setPage} darkMode={darkMode} />;
     }

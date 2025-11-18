@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-export default function ProfilePage({ profile, darkMode, setPage, setModalProfile, setModalOpenWithMessage, connectedProfiles = [], toggleConnect }) {
+export default function ProfilePage({ profile, currentUser, setSelectedProfile, darkMode, setPage, setModalProfile, setModalOpenWithMessage, connectedProfiles = [], toggleConnect }) {
   if (!profile) {
     return (
       <div className={`pt-24 min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-900'}`}>
@@ -39,12 +39,13 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
               <p className={`${darkMode ? 'text-gray-300' : 'text-gray-600'} mt-2`}>{profile.cargo} {profile.habilidadesTecnicas && <span className="hidden md:inline">| {profile.habilidadesTecnicas.slice(0,6).join(' | ')}</span>}</p>
               <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'} mt-2`}>{profile.localizacao} · Informação de contato</p>
 
-              <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
-                <button className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-teal-600 hover:bg-teal-700'} text-white px-4 py-2 rounded-full font-semibold`}>Tenho interesse em...</button>
-                <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`}>Adicionar seção ao perfil</button>
-                <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`}>Aprimorar perfil</button>
-                <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`}>Recursos</button>
-              </div>
+              <ProfileActions
+                profile={profile}
+                currentUser={currentUser}
+                setSelectedProfile={setSelectedProfile}
+                darkMode={darkMode}
+                setPage={setPage}
+              />
             </div>
           </div>
 
@@ -101,6 +102,120 @@ export default function ProfilePage({ profile, darkMode, setPage, setModalProfil
 
         </div>
       </div>
+    </div>
+  );
+}
+
+function ProfileActions({ profile, currentUser, setSelectedProfile, darkMode, setPage }) {
+  const isOwner = currentUser && profile && currentUser.id === profile.id;
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState({});
+  const [imageValid, setImageValid] = useState(true);
+
+  useEffect(() => {
+    if (profile) {
+      setForm({
+        nome: profile.nome || '',
+        cargo: profile.cargo || '',
+        resumo: profile.resumo || '',
+        foto: profile.foto || '',
+        habilidades: (profile.habilidadesTecnicas || []).join(', '),
+      });
+    }
+  }, [profile]);
+
+  const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const save = (e) => {
+    e.preventDefault();
+    if (!setSelectedProfile) return setEditing(false);
+
+    const updated = {
+      ...profile,
+      nome: form.nome,
+      cargo: form.cargo,
+      resumo: form.resumo,
+      foto: form.foto,
+      habilidadesTecnicas: form.habilidades.split(',').map(s => s.trim()).filter(Boolean),
+    };
+
+    setSelectedProfile(updated);
+    // Persist to local users.json via backend API (server.js)
+    fetch('http://localhost:4000/api/users/' + (profile.id || updated.email), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated)
+    }).then(res => {
+      if (!res.ok) console.warn('failed to persist user');
+    }).catch(err => console.error(err));
+
+    setEditing(false);
+    setPage && setPage('profile');
+  };
+
+  if (editing) {
+    return (
+      <form onSubmit={save} className="mt-4 p-4 w-full max-w-full">
+        <div className="grid grid-cols-1 gap-3">
+          <div>
+            <label className="text-sm font-medium block mb-1">Nome (ex.: Professor Lucas)</label>
+            <input name="nome" value={form.nome} onChange={handleChange} className="p-2 rounded border bg-transparent w-full" placeholder="Nome" />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium block mb-1">Cargo / Título (ex.: Professor - FIAP)</label>
+            <input name="cargo" value={form.cargo} onChange={handleChange} className="p-2 rounded border bg-transparent w-full" placeholder="Cargo" />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium block mb-1">Foto (URL) (ex.: https://placehold.co/100x100)</label>
+            <input name="foto" value={form.foto} onChange={handleChange} className="p-2 rounded border bg-transparent w-full" placeholder="URL da foto" />
+            <p className="text-xs text-gray-400 mt-1">Dica: alguns provedores (ex.: LinkedIn) bloqueiam hotlink. Use URLs diretas (imgur, placehold.co, raw.githubusercontent.com).</p>
+            {form.foto && (
+              <div className="mt-2">
+                <div className="w-24 h-24 rounded overflow-hidden border">
+                  <img
+                    src={form.foto}
+                    alt="preview"
+                    onLoad={() => setImageValid(true)}
+                    onError={() => setImageValid(false)}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                {!imageValid && (
+                  <p className="text-xs text-red-400 mt-1">Não foi possível carregar a imagem — verifique a URL ou use um host diferente.</p>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label className="text-sm font-medium block mb-1">Resumo / Descrição (ex.: Breve descrição sobre você)</label>
+            <textarea name="resumo" value={form.resumo} onChange={handleChange} className="p-2 rounded border bg-transparent w-full" placeholder="Resumo" rows={4} />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium block mb-1">Habilidades (separadas por vírgula) (ex.: Ensino, Mentoria, Desenvolvimento Web)</label>
+            <input name="habilidades" value={form.habilidades} onChange={handleChange} className="p-2 rounded border bg-transparent w-full" placeholder="Habilidades (separadas por vírgula)" />
+          </div>
+
+          <div className="flex gap-3">
+            <button type="submit" className="bg-purple-600 text-white px-4 py-2 rounded">Salvar</button>
+            <button type="button" onClick={() => setEditing(false)} className="border px-4 py-2 rounded">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    );
+  }
+
+  return (
+    <div className="mt-4 flex flex-wrap gap-3 justify-center md:justify-start">
+      <button className={`${darkMode ? 'bg-purple-600 hover:bg-purple-700' : 'bg-teal-600 hover:bg-teal-700'} text-white px-4 py-2 rounded-full font-semibold`} onClick={() => setPage && setPage('profissionais')}>Tenho interesse em...</button>
+      <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`} onClick={() => setPage && setPage('profissionais')}>Adicionar seção ao perfil</button>
+      {isOwner && (
+        <button className={`${darkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-gray-900'} px-4 py-2 rounded-full`} onClick={() => setEditing(true)}>Editar Perfil</button>
+      )}
+      <button className={`${darkMode ? 'border-gray-700 text-gray-200' : 'border-gray-300 text-gray-700'} border px-4 py-2 rounded-full`} onClick={() => setPage && setPage('home')}>Voltar</button>
     </div>
   );
 }
