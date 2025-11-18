@@ -20,24 +20,21 @@ export default function Landing({ setPage, darkMode }) {
         </div>
 
         <div className="flex flex-col items-center md:items-end">
-          {/* Cartoon illustration (inline SVG) */}
-          <div className={`w-full max-w-md p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} shadow-lg`}> 
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-64">
-              <defs>
-                <linearGradient id="g" x1="0" x2="1">
-                  <stop offset="0%" stopColor="#a78bfa" />
-                  <stop offset="100%" stopColor="#34d399" />
-                </linearGradient>
-              </defs>
-              <rect x="0" y="0" width="200" height="200" rx="20" fill={darkMode ? '#0f1724' : '#ffffff'} />
-              <circle cx="100" cy="70" r="36" fill="#FFD28A" />
-              <ellipse cx="85" cy="78" rx="6" ry="8" fill="#111827" />
-              <ellipse cx="115" cy="78" rx="6" ry="8" fill="#111827" />
-              <path d="M80 95 Q100 110 120 95" stroke="#111827" strokeWidth="3" fill="none" strokeLinecap="round" />
-              <rect x="40" y="120" width="120" height="36" rx="8" fill="url(#g)" opacity="0.95" />
-              <text x="100" y="145" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="700">SkillSync</text>
-            </svg>
-            <p className={`mt-4 text-center ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>Uma maneira mais humana de encontrar talentos.</p>
+          {/* Rocket illustration card */}
+          <div className={`w-full max-w-2xl p-6 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl border ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+            <div className="relative w-full h-80 rounded-xl overflow-hidden flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-600">
+              {/* Use user's image placed at public/door-illustration.png */}
+              <img
+                src="/door-ilustration.png.png"
+                alt="Entrada"
+                className="w-full h-full object-cover filter contrast-[0.95] brightness-[0.9] saturate-[0.85] mix-blend-normal"
+              />
+
+              {/* Color overlay to tint image to site tones */}
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-800/30 to-indigo-900/30 mix-blend-multiply pointer-events-none" />
+              <div className="absolute inset-0 rounded-xl ring-1 ring-black/20 pointer-events-none" />
+            </div>
+            <p className={`mt-6 text-center ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Uma maneira mais humana de encontrar talentos.</p>
           </div>
         </div>
       </div>

@@ -275,14 +275,14 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode, modal
     }
   };
 
+  // Styled to match the provided mock: centered, rounded card with shadow and avatar
   const outerWrapperClass = modal ? 'w-full flex items-center justify-center' : `min-h-screen flex items-center justify-center px-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`;
-  const cardBgClass = modal ? `${darkMode ? 'bg-gray-900/90' : 'bg-white'}` : `${darkMode ? 'bg-gray-800/70' : 'bg-white'}`;
+  const cardBgClass = modal ? `${darkMode ? 'bg-gray-900/90' : 'bg-white'}` : `${darkMode ? 'bg-gray-800' : 'bg-white'}`;
 
   return (
     <div className={outerWrapperClass}>
-      <div className={`w-full max-w-md ${cardBgClass} backdrop-blur-md p-8 rounded-2xl shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+      <div className={`w-full max-w-md ${cardBgClass} pt-8 p-8 rounded-3xl shadow-2xl border ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-600 text-white font-bold text-lg mb-3">SS</div>
           <h2 className="text-2xl font-semibold">Entrar no Painel</h2>
           <p className="text-sm text-gray-400 mt-1">Acesso restrito a professores (conta institucional)</p>
         </div>
@@ -295,7 +295,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode, modal
               id="email"
               type="email"
               placeholder="professorfiap@skillsync.com"
-              className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'}`}
+              className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-300' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500'}`}
               required
             />
           </div>
@@ -308,7 +308,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode, modal
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Senha"
-                className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-gray-50 border-gray-200 text-gray-900'} pr-12`}
+                className={`w-full p-3 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-300' : 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-500'} pr-12`}
                 required
               />
               <button
@@ -332,7 +332,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode, modal
             </div>
           </div>
 
-          <button type="submit" className="w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-teal-500 text-white font-semibold hover:opacity-95 transition">
+          <button type="submit" className="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 via-purple-400 to-teal-400 text-white font-semibold hover:opacity-95 transition shadow-lg">
             Entrar
           </button>
 
@@ -826,9 +826,12 @@ export default function App() {
   };
 
   const renderPage = () => {
-    // if not logged in, always show login page
+    // If not logged in: show Landing by default and allow only the explicit login page.
     if (!isLoggedIn) {
-      return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
+      if (page === 'login') {
+        return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
+      }
+      return <Landing setPage={setPage} darkMode={darkMode} />;
     }
 
     switch (page) {
@@ -849,20 +852,22 @@ export default function App() {
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
-      <Navbar 
-        setPage={setPage} 
-        isLoggedIn={isLoggedIn} 
-        setIsLoggedIn={setIsLoggedIn}
-        darkMode={darkMode}
-        toggleDarkMode={toggleDarkMode}
-        selectedProfile={selectedProfile}
-        setSelectedProfile={setSelectedProfile}
-      />
-      
-      <main>
-        
+      {/* Show Navbar and extra chrome only when logged in */}
+      {isLoggedIn && (
+        <Navbar 
+          setPage={setPage} 
+          isLoggedIn={isLoggedIn} 
+          setIsLoggedIn={setIsLoggedIn}
+          darkMode={darkMode}
+          toggleDarkMode={toggleDarkMode}
+          selectedProfile={selectedProfile}
+          setSelectedProfile={setSelectedProfile}
+        />
+      )}
 
-        {welcomeOpen && selectedProfile && (
+      <main>
+
+        {isLoggedIn && welcomeOpen && selectedProfile && (
           <div className="max-w-7xl mx-auto px-4 mt-20">
             <div className={`rounded-lg p-4 text-center ${darkMode ? 'bg-green-800 text-green-100' : 'bg-green-100 text-green-900'}`}>
               <strong>Bem-vindo(a),</strong> <span className="font-semibold">{selectedProfile ? selectedProfile.nome : ''}</span>! Você já pode usar a plataforma.
@@ -872,10 +877,11 @@ export default function App() {
 
         {renderPage()}
       </main>
-      
-      <SupportCallout darkMode={darkMode} />
-      <Footer darkMode={darkMode} setPage={setPage} />
-      
+
+      {/* Only show support/footer when logged in */}
+      {isLoggedIn && <SupportCallout darkMode={darkMode} />}
+      {isLoggedIn && <Footer darkMode={darkMode} setPage={setPage} />}
+
       {modalProfile && (
         <ProfileModal 
           profile={modalProfile} 
