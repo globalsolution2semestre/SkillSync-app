@@ -811,6 +811,11 @@ export default function App() {
   useEffect(() => {
     if (isLoggedIn) {
       setWelcomeOpen(true);
+      // When the user logs in, show the welcome/landing view first
+      // (does not modify the LoginPage component). This ensures the
+      // page displays the 'Bem-vindo(a) à SkillSync' layout after login.
+      setPage('home');
+
       const t = setTimeout(() => setWelcomeOpen(false), 4000);
       return () => clearTimeout(t);
     }
@@ -831,12 +836,12 @@ export default function App() {
       if (page === 'login') {
         return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
       }
-      return <Landing setPage={setPage} darkMode={darkMode} />;
+      return <Landing setPage={setPage} darkMode={darkMode} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
     }
 
     switch (page) {
       case 'home':
-        return <Landing setPage={setPage} darkMode={darkMode} />;
+        return <Landing setPage={setPage} darkMode={darkMode} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
       case 'profissionais':
         return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
       case 'porque':
