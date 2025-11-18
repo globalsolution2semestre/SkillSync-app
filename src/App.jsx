@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { profissionaisData } from './data/profissionais';
 import ProfilePage from './components/ProfilePage';
 import WhySkillSync from './components/WhySkillSync';
+import Landing from './components/Landing';
 
 function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -242,7 +243,7 @@ function PorqueSkillSync({ darkMode }) {
   );
 }
 
-function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
+function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode, modal = false }) {
   const [showPassword, setShowPassword] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -274,9 +275,12 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode }) {
     }
   };
 
+  const outerWrapperClass = modal ? 'w-full flex items-center justify-center' : `min-h-screen flex items-center justify-center px-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`;
+  const cardBgClass = modal ? `${darkMode ? 'bg-gray-900/90' : 'bg-white'}` : `${darkMode ? 'bg-gray-800/70' : 'bg-white'}`;
+
   return (
-    <div className={`min-h-screen flex items-center justify-center px-4 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
-      <div className={`w-full max-w-md ${darkMode ? 'bg-gray-800/70' : 'bg-white'} backdrop-blur-md p-8 rounded-2xl shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+    <div className={outerWrapperClass}>
+      <div className={`w-full max-w-md ${cardBgClass} backdrop-blur-md p-8 rounded-2xl shadow-lg border ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-600 text-white font-bold text-lg mb-3">SS</div>
           <h2 className="text-2xl font-semibold">Entrar no Painel</h2>
@@ -519,14 +523,39 @@ function ProfileModal({ profile, closeModal, darkMode, openWithMessage }) {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    // Lógica simulada
+    // Send message to local server (writes to src/data/messages.json)
+    const payload = {
+      professionalId: profile.id,
+      message,
+      sender: null
+    };
+
     setMessageSent(true);
-    
-    setTimeout(() => {
-      setMessage('');
-      setShowForm(false);
-      setMessageSent(false);
-    }, 3000); // Reseta o formulário após 3s
+
+    fetch('http://localhost:4000/api/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(async (res) => {
+      if (!res.ok) throw new Error('failed');
+      const data = await res.json();
+      console.log('message saved', data);
+      setTimeout(() => {
+        setMessage('');
+        setShowForm(false);
+        setMessageSent(false);
+      }, 1000);
+    })
+    .catch((err) => {
+      console.error(err);
+      // fallback: still reset but show error in console
+      setTimeout(() => {
+        setMessage('');
+        setShowForm(false);
+        setMessageSent(false);
+      }, 1000);
+    });
   };
   
   const handleRecommend = () => {
@@ -748,7 +777,7 @@ function Footer({ darkMode, setPage }) {
  */
 export default function App() {
   // Estado para navegação
-  const [page, setPage] = useState('home'); // 'home', 'profissionais', 'porque', 'login'
+  const [page, setPage] = useState('home');
   
   // Estado de "fake login"
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -766,6 +795,8 @@ export default function App() {
 
   // Estado para abrir modal já com o formulário de mensagem
   const [modalOpenWithMessage, setModalOpenWithMessage] = useState(false);
+  // Welcome banner after login
+  const [welcomeOpen, setWelcomeOpen] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -777,6 +808,16 @@ export default function App() {
   
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      setWelcomeOpen(true);
+      const t = setTimeout(() => setWelcomeOpen(false), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [isLoggedIn]);
+
+  // (removed global login overlay) no scroll lock here anymore
+
   const toggleConnect = (profileId) => {
     setConnectedProfiles(prev => {
       if (prev.includes(profileId)) return prev.filter(id => id !== profileId);
@@ -785,9 +826,14 @@ export default function App() {
   };
 
   const renderPage = () => {
+    // if not logged in, always show login page
+    if (!isLoggedIn) {
+      return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
+    }
+
     switch (page) {
       case 'home':
-        return <Homepage setPage={setPage} darkMode={darkMode} />;
+        return <Landing setPage={setPage} darkMode={darkMode} />;
       case 'profissionais':
         return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
       case 'porque':
@@ -814,6 +860,16 @@ export default function App() {
       />
       
       <main>
+        
+
+        {welcomeOpen && selectedProfile && (
+          <div className="max-w-7xl mx-auto px-4 mt-20">
+            <div className={`rounded-lg p-4 text-center ${darkMode ? 'bg-green-800 text-green-100' : 'bg-green-100 text-green-900'}`}>
+              <strong>Bem-vindo(a),</strong> <span className="font-semibold">{selectedProfile ? selectedProfile.nome : ''}</span>! Você já pode usar a plataforma.
+            </div>
+          </div>
+        )}
+
         {renderPage()}
       </main>
       
