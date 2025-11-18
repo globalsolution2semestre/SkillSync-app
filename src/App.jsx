@@ -5,7 +5,7 @@ import ProfilePage from './components/ProfilePage';
 import WhySkillSync from './components/WhySkillSync';
 import Landing from './components/Landing';
 
-function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile }) {
+function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile, setViewedProfile }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
@@ -15,7 +15,11 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
   };
 
   const openProfile = () => {
-    if (selectedProfile) setPage('profile');
+    if (selectedProfile) {
+      // Ensure we view the logged-in profile (clear any previously viewed profile)
+      if (setViewedProfile) setViewedProfile(null);
+      setPage('profile');
+    }
     setMobileOpen(false);
   };
 
@@ -373,7 +377,7 @@ function LoginPage({ setPage, setIsLoggedIn, setSelectedProfile, darkMode, modal
  * Componente: ProfissionaisPage
  * Descrição: Página que lista todos os profissionais.
  */
-function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles, toggleConnect, isLoggedIn, selectedProfile }) {
+function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setViewedProfile, setPage, connectedProfiles, toggleConnect, isLoggedIn, selectedProfile }) {
   // Estados para filtros (pode ser expandido)
   const [searchTerm, setSearchTerm] = useState('');
   const [filterArea, setFilterArea] = useState('');
@@ -448,6 +452,7 @@ function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setP
               setModalProfile={setModalProfile}
               darkMode={darkMode}
               setSelectedProfile={setSelectedProfile}
+              setViewedProfile={setViewedProfile}
               setPage={setPage}
               connectedProfiles={connectedProfiles}
               toggleConnect={toggleConnect}
@@ -473,7 +478,7 @@ function ProfissionaisPage({ setModalProfile, darkMode, setSelectedProfile, setP
  * Componente: ProfessionalCard
  * Descrição: Card individual de um profissional na lista.
  */
-function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfile, setPage, connectedProfiles = [], toggleConnect, isLoggedIn, currentProfile }) {
+function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfile, setViewedProfile, setPage, connectedProfiles = [], toggleConnect, isLoggedIn, currentProfile }) {
   return (
     <div className={`p-6 rounded-lg shadow-lg transition-transform hover:scale-[1.02] ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
       <div className="flex items-center mb-4">
@@ -513,13 +518,28 @@ function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfi
 
             if (isInstitutionalProfessor) {
               if (setModalProfile) setModalProfile(profile);
-            } else {
-              if (setSelectedProfile && setPage) {
-                setSelectedProfile(profile);
+              return;
+            }
+
+            // If someone is logged in, viewing another profile should NOT overwrite
+            // the logged-in user's `selectedProfile`. Use `setViewedProfile` to open
+            // the profile page for the clicked professional instead.
+            if (isLoggedIn) {
+              if (setViewedProfile && setPage) {
+                setViewedProfile(profile);
                 setPage('profile');
               } else if (setModalProfile) {
                 setModalProfile(profile);
               }
+              return;
+            }
+
+            // Not logged in: legacy behavior — set as selectedProfile and go to profile page
+            if (setSelectedProfile && setPage) {
+              setSelectedProfile(profile);
+              setPage('profile');
+            } else if (setModalProfile) {
+              setModalProfile(profile);
             }
           }}
           className="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
@@ -812,6 +832,8 @@ export default function App() {
   const [modalProfile, setModalProfile] = useState(null);
   // Estado para perfil selecionado (página de perfil após login)
   const [selectedProfile, setSelectedProfile] = useState(null);
+  // Estado para visualizar um perfil sem sobrescrever o perfil logado
+  const [viewedProfile, setViewedProfile] = useState(null);
   
   // Estado para Dark Mode (padrão: true)
   const [darkMode, setDarkMode] = useState(true);
@@ -847,6 +869,11 @@ export default function App() {
     }
   }, [isLoggedIn]);
 
+  // Quando desloga, limpar o perfil visualizado
+  useEffect(() => {
+    if (!isLoggedIn) setViewedProfile(null);
+  }, [isLoggedIn]);
+
   // (removed global login overlay) no scroll lock here anymore
 
   const toggleConnect = (profileId) => {
@@ -862,20 +889,23 @@ export default function App() {
       if (page === 'login') {
         return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
       }
-      return <Landing setPage={setPage} darkMode={darkMode} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
+      return <Landing setPage={setPage} darkMode={darkMode} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} setViewedProfile={setViewedProfile} />;
     }
 
     switch (page) {
       case 'home':
-        return <Landing setPage={setPage} darkMode={darkMode} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
+        return <Landing setPage={setPage} darkMode={darkMode} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} setViewedProfile={setViewedProfile} />;
       case 'profissionais':
-        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
+        return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setViewedProfile={setViewedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
       case 'porque':
         return <WhySkillSync darkMode={darkMode} setPage={setPage} />;
       case 'login':
         return <LoginPage setPage={setPage} setIsLoggedIn={setIsLoggedIn} setSelectedProfile={setSelectedProfile} darkMode={darkMode} />;
-      case 'profile':
-        return <ProfilePage profile={selectedProfile} currentUser={selectedProfile} setSelectedProfile={setSelectedProfile} darkMode={darkMode} setPage={setPage} setModalProfile={setModalProfile} setModalOpenWithMessage={setModalOpenWithMessage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} />;
+      case 'profile': {
+        // If we are viewing another profile, prefer `viewedProfile`.
+        const profileToShow = viewedProfile || selectedProfile;
+        return <ProfilePage profile={profileToShow} currentUser={selectedProfile} setSelectedProfile={setSelectedProfile} darkMode={darkMode} setPage={setPage} setModalProfile={setModalProfile} setModalOpenWithMessage={setModalOpenWithMessage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} />;
+      }
       default:
         return <Homepage setPage={setPage} darkMode={darkMode} />;
     }
@@ -892,7 +922,8 @@ export default function App() {
           darkMode={darkMode}
           toggleDarkMode={toggleDarkMode}
           selectedProfile={selectedProfile}
-          setSelectedProfile={setSelectedProfile}
+            setSelectedProfile={setSelectedProfile}
+            setViewedProfile={setViewedProfile}
         />
       )}
 
@@ -906,7 +937,9 @@ export default function App() {
           </div>
         )}
 
-        {renderPage()}
+        <ErrorBoundary>
+          {renderPage()}
+        </ErrorBoundary>
       </main>
 
       {/* Only show support/footer when logged in */}
@@ -944,4 +977,34 @@ function SupportCallout({ darkMode }) {
       </div>
     </div>
   );
+}
+
+// Simple Error Boundary to avoid white screens and show useful info
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null, info: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, info) {
+    console.error('ErrorBoundary caught', error, info);
+    this.setState({ info });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="p-8 text-center">
+          <h2 className="text-2xl font-bold text-red-600">Ocorreu um erro ao renderizar a página.</h2>
+          <pre className="text-sm text-left max-w-4xl mx-auto mt-4 p-4 bg-gray-100 rounded overflow-auto">{String(this.state.error && this.state.error.toString())}\n{this.state.info && this.state.info.componentStack}</pre>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
 }

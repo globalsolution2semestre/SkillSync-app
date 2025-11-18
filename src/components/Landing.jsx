@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Landing({ setPage, darkMode, isLoggedIn = false, selectedProfile = null }) {
+export default function Landing({ setPage, darkMode, isLoggedIn = false, selectedProfile = null, setViewedProfile }) {
   if (isLoggedIn) {
     const welcomeName = selectedProfile
       ? (selectedProfile.email === 'professorfiap@skillsync.com' ? 'Professor FIAP' : selectedProfile.nome || 'Professor')
@@ -20,7 +20,11 @@ export default function Landing({ setPage, darkMode, isLoggedIn = false, selecte
                 Explorar Profissionais
               </button>
               <button
-                onClick={() => setPage('profile')}
+                onClick={() => {
+                  // When opening 'Meu Perfil', ensure we clear any previously viewed profile
+                  if (setViewedProfile) setViewedProfile(null);
+                  setPage('profile');
+                }}
                 className="bg-gray-700 text-white px-6 py-4 rounded-lg font-medium hover:bg-gray-600 transition-transform"
               >
                 Meu Perfil
