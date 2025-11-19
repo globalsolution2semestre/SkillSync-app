@@ -1,0 +1,62 @@
+[
+  {
+    "id": "job_1",
+    "title": "Desenvolvedor Front-end (React)",
+    "company": "TechNova",
+    "location": "São Paulo/SP",
+    "snippet": "Desenvolvimento de aplicações web em React, integração com APIs REST e otimização de performance.",
+    "salary_min": 6000,
+    "salary_max": 9000,
+    "posted_at": "2025-11-10",
+    "url": "https://vagas.example.com/job_1",
+    "tags": ["React", "JavaScript", "HTML", "CSS"]
+  },
+  {
+    "id": "job_2",
+    "title": "Analista de Data Science",
+    "company": "DataInsights",
+    "location": "Belo Horizonte/MG",
+    "snippet": "Modelagem preditiva, ETL e visualização de dados usando Python e ferramentas de BI.",
+    "salary_min": 7000,
+    "salary_max": 12000,
+    "posted_at": "2025-11-08",
+    "url": "https://vagas.example.com/job_2",
+    "tags": ["Python", "Pandas", "Machine Learning"]
+  },
+  {
+    "id": "job_3",
+    "title": "UX/UI Designer",
+    "company": "CreativeLab",
+    "location": "Rio de Janeiro/RJ",
+    "snippet": "Criação de interfaces e protótipos, testes de usabilidade e colaboração com equipes de produto.",
+    "salary_min": 4500,
+    "salary_max": 8000,
+    "posted_at": "2025-11-01",
+    "url": "https://vagas.example.com/job_3",
+    "tags": ["Design", "Figma", "Prototipagem"]
+  },
+  {
+    "id": "job_4",
+    "title": "Engenheiro de DevOps",
+    "company": "CloudScale",
+    "location": "Porto Alegre/RS",
+    "snippet": "Automação de infraestrutura, CI/CD, containerização e monitoramento.",
+    "salary_min": 9000,
+    "salary_max": 15000,
+    "posted_at": "2025-10-28",
+    "url": "https://vagas.example.com/job_4",
+    "tags": ["AWS", "Docker", "Kubernetes"]
+  },
+  {
+    "id": "job_5",
+    "title": "Product Manager",
+    "company": "InovaProduct",
+    "location": "Curitiba/PR",
+    "snippet": "Gerenciamento de roadmap, definição de requisitos e coordenação com engenharia e design.",
+    "salary_min": 8000,
+    "salary_max": 13000,
+    "posted_at": "2025-11-12",
+    "url": "https://vagas.example.com/job_5",
+    "tags": ["Gestão", "Produto", "Agile"]
+  }
+]

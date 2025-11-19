@@ -4,6 +4,7 @@ import usersData from './data/users.json';
 import ProfilePage from './components/ProfilePage';
 import WhySkillSync from './components/WhySkillSync';
 import Landing from './components/Landing';
+import JobSearch from './components/JobSearch';
 
 function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile, setViewedProfile }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -33,8 +34,9 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
         >
           SkillSync
         </h1>
-        <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-6">
           <NavItem onClick={() => setPage('profissionais')} underline>Profissionais</NavItem>
+          <NavItem onClick={() => setPage('jobs')} underline>Vagas</NavItem>
           <NavItem onClick={() => setPage('porque')} underline>Porque o SkillSync?</NavItem>
           <NavItem href="#footer" underline>Suporte</NavItem>
           <button 
@@ -101,6 +103,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
         <div onClick={(e) => e.stopPropagation()} className={`absolute top-16 left-4 right-4 p-4 rounded-lg ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} shadow-lg`}>
           <div className="flex flex-col space-y-3">
             <button onClick={() => { setPage('profissionais'); setMobileOpen(false); }} className="text-left font-medium">Profissionais</button>
+            <button onClick={() => { setPage('jobs'); setMobileOpen(false); }} className="text-left font-medium">Vagas</button>
             <button onClick={() => { setPage('porque'); setMobileOpen(false); }} className="text-left font-medium">Porque o SkillSync?</button>
             <a href="#footer" onClick={() => setMobileOpen(false)} className="text-left font-medium">Suporte</a>
             <button onClick={() => { toggleDarkMode(); setMobileOpen(false); }} className="text-left">{darkMode ? 'Modo claro' : 'Modo escuro'}</button>
@@ -897,6 +900,8 @@ export default function App() {
         return <Landing setPage={setPage} darkMode={darkMode} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} setViewedProfile={setViewedProfile} />;
       case 'profissionais':
         return <ProfissionaisPage setModalProfile={setModalProfile} darkMode={darkMode} setSelectedProfile={setSelectedProfile} setViewedProfile={setViewedProfile} setPage={setPage} connectedProfiles={connectedProfiles} toggleConnect={toggleConnect} isLoggedIn={isLoggedIn} selectedProfile={selectedProfile} />;
+      case 'jobs':
+        return <JobSearch darkMode={darkMode} />;
       case 'porque':
         return <WhySkillSync darkMode={darkMode} setPage={setPage} />;
       case 'login':
