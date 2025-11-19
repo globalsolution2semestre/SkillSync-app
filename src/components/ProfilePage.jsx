@@ -29,8 +29,19 @@ export default function ProfilePage({ profile, currentUser, setSelectedProfile, 
 
             <div className="w-full text-center md:text-left">
               <div className="flex flex-col md:flex-row md:items-center items-center md:space-x-4 space-y-2 md:space-y-0 justify-center md:justify-start">
-                <h1 className="text-2xl md:text-3xl font-bold break-words">{profile.nome}</h1>
-                <span className="text-sm px-3 py-1 rounded-full bg-purple-50 text-purple-700">Adicionar selo de verificação</span>
+                <div className="flex items-center gap-3">
+                  <h1 className="text-2xl md:text-3xl font-bold break-words flex items-center gap-2">{profile.nome}
+                    {(profile.isEvaluator || (currentUser && currentUser.isEvaluator)) && (
+                      <svg className="w-5 h-5 text-yellow-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" fill="rgba(250,204,21,0.12)" />
+                        <path d="M9 12.5l1.8 1.8L15 10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    )}
+                  </h1>
+                  {(profile.isEvaluator || (currentUser && currentUser.isEvaluator)) && (
+                    <span className="text-sm px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 border border-yellow-300">Avaliador</span>
+                  )}
+                </div>
                 <div className="ml-auto hidden md:block">
                   <span className="text-sm px-3 py-1 rounded-full bg-gray-100 text-gray-800">{profile.area}</span>
                 </div>

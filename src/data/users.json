@@ -256,6 +256,7 @@
     "email": "lucas.sousa@fiap.com.br",
     "senha": "150387fiap",
     "aniversario": "1987-03-15",
+    "isEvaluator": true,
     "posts": []
   },
   {
@@ -309,6 +310,7 @@
     "email": "wellington.cidade@fiap.com.br",
     "senha": "200575fiap",
     "aniversario": "1975-05-20",
+    "isEvaluator": true,
     "posts": []
   }
 ]
