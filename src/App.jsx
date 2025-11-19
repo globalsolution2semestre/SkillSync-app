@@ -5,8 +5,9 @@ import ProfilePage from './components/ProfilePage';
 import WhySkillSync from './components/WhySkillSync';
 import Landing from './components/Landing';
 import JobSearch from './components/JobSearch';
+import SkillMatchModal from './components/SkillMatchModal';
 
-function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile, setViewedProfile }) {
+function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile, setViewedProfile, setSkillModalOpen }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
@@ -39,6 +40,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
           <NavItem onClick={() => setPage('jobs')} underline>Vagas</NavItem>
           <NavItem onClick={() => setPage('porque')} underline>Porque o SkillSync?</NavItem>
           <NavItem href="#footer" underline>Suporte</NavItem>
+          <button onClick={() => setSkillModalOpen && setSkillModalOpen(true)} className="px-3 py-2 rounded-md bg-purple-600 text-white font-medium hover:bg-purple-700">SkillMatch</button>
           <button 
             onClick={toggleDarkMode} 
             className={`p-2 rounded-full transition-colors ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-200'}`}
@@ -107,6 +109,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
             <button onClick={() => { setPage('porque'); setMobileOpen(false); }} className="text-left font-medium">Porque o SkillSync?</button>
             <a href="#footer" onClick={() => setMobileOpen(false)} className="text-left font-medium">Suporte</a>
             <button onClick={() => { toggleDarkMode(); setMobileOpen(false); }} className="text-left">{darkMode ? 'Modo claro' : 'Modo escuro'}</button>
+            <button onClick={() => { setSkillModalOpen && setSkillModalOpen(true); setMobileOpen(false); }} className="text-left font-medium bg-purple-600 text-white px-3 py-2 rounded">SkillMatch</button>
             {!isLoggedIn ? (
               <button onClick={() => { setPage('login'); setMobileOpen(false); }} className="bg-purple-600 text-white px-3 py-2 rounded">Entrar</button>
             ) : (
@@ -161,7 +164,7 @@ function NavItem({ children, onClick, href, underline }) {
  */
 function Homepage({ setPage, darkMode }) {
   return (
-    <div className={`h-screen min-h-[700px] pt-16 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}>
+    <div className={`md:h-screen md:min-h-[700px] pt-16 ${darkMode ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-900'}`}>
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between h-full px-4">
         <div className="md:w-1/2 text-center md:text-left p-8">
           <h2 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
@@ -496,7 +499,7 @@ function ProfessionalCard({ profile, setModalProfile, darkMode, setSelectedProfi
           <p className={`${darkMode ? 'text-purple-300' : 'text-purple-600'} font-medium`}>{profile.cargo}</p>
         </div>
       </div>
-      <p className={`mb-4 h-20 overflow-hidden ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{profile.resumo}</p>
+      <p className={`mb-4 max-h-20 overflow-hidden ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>{profile.resumo}</p>
       <div className="flex flex-wrap gap-2 mb-6">
         {profile.habilidadesTecnicas.slice(0, 3).map(skill => (
           <span key={skill} className={`px-3 py-1 rounded-full text-sm font-medium ${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-200 text-gray-700'}`}>
@@ -846,6 +849,8 @@ export default function App() {
 
   // Estado para abrir modal já com o formulário de mensagem
   const [modalOpenWithMessage, setModalOpenWithMessage] = useState(false);
+  // Estado para abrir o SkillMatch modal
+  const [skillModalOpen, setSkillModalOpen] = useState(false);
   // Welcome banner after login
   const [welcomeOpen, setWelcomeOpen] = useState(false);
 
@@ -929,6 +934,7 @@ export default function App() {
           selectedProfile={selectedProfile}
             setSelectedProfile={setSelectedProfile}
             setViewedProfile={setViewedProfile}
+            setSkillModalOpen={setSkillModalOpen}
         />
       )}
 
@@ -959,6 +965,8 @@ export default function App() {
           openWithMessage={modalOpenWithMessage}
         />
       )}
+      {/* SkillMatch AI modal (global) */}
+      <SkillMatchModal isOpen={skillModalOpen} onClose={() => setSkillModalOpen(false)} />
     </div>
   );
 }
