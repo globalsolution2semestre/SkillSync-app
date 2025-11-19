@@ -6,8 +6,9 @@ import WhySkillSync from './components/WhySkillSync';
 import Landing from './components/Landing';
 import JobSearch from './components/JobSearch';
 import SkillMatchModal from './components/SkillMatchModal';
+import ChatLauncher from './components/ChatLauncher';
 
-function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile, setViewedProfile, setSkillModalOpen }) {
+function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, selectedProfile, setSelectedProfile, setViewedProfile }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
@@ -40,7 +41,6 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
           <NavItem onClick={() => setPage('jobs')} underline>Vagas</NavItem>
           <NavItem onClick={() => setPage('porque')} underline>Porque o SkillSync?</NavItem>
           <NavItem href="#footer" underline>Suporte</NavItem>
-          <button onClick={() => setSkillModalOpen && setSkillModalOpen(true)} className="px-3 py-2 rounded-md bg-purple-600 text-white font-medium hover:bg-purple-700">SkillMatch</button>
           <button 
             onClick={toggleDarkMode} 
             className={`p-2 rounded-full transition-colors ${darkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-200'}`}
@@ -109,7 +109,7 @@ function Navbar({ setPage, isLoggedIn, setIsLoggedIn, darkMode, toggleDarkMode, 
             <button onClick={() => { setPage('porque'); setMobileOpen(false); }} className="text-left font-medium">Porque o SkillSync?</button>
             <a href="#footer" onClick={() => setMobileOpen(false)} className="text-left font-medium">Suporte</a>
             <button onClick={() => { toggleDarkMode(); setMobileOpen(false); }} className="text-left">{darkMode ? 'Modo claro' : 'Modo escuro'}</button>
-            <button onClick={() => { setSkillModalOpen && setSkillModalOpen(true); setMobileOpen(false); }} className="text-left font-medium bg-purple-600 text-white px-3 py-2 rounded">SkillMatch</button>
+            {/* SkillMatch removed from mobile menu - launcher available after login via floating button */}
             {!isLoggedIn ? (
               <button onClick={() => { setPage('login'); setMobileOpen(false); }} className="bg-purple-600 text-white px-3 py-2 rounded">Entrar</button>
             ) : (
@@ -934,7 +934,6 @@ export default function App() {
           selectedProfile={selectedProfile}
             setSelectedProfile={setSelectedProfile}
             setViewedProfile={setViewedProfile}
-            setSkillModalOpen={setSkillModalOpen}
         />
       )}
 
@@ -965,8 +964,10 @@ export default function App() {
           openWithMessage={modalOpenWithMessage}
         />
       )}
-      {/* SkillMatch AI modal (global) */}
-      <SkillMatchModal isOpen={skillModalOpen} onClose={() => setSkillModalOpen(false)} />
+      {/* Floating chat launcher (opens SkillMatch modal) - only when logged in */}
+      {isLoggedIn && <ChatLauncher onOpen={() => setSkillModalOpen(true)} />}
+      {/* SkillMatch AI modal (global) - only when logged in */}
+      {isLoggedIn && <SkillMatchModal isOpen={skillModalOpen} onClose={() => setSkillModalOpen(false)} />}
     </div>
   );
 }
