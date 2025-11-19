@@ -209,4 +209,107 @@
     "posts": []
   }
   ,
-  
+  {
+    "id": "lucas_sousa",
+    "nome": "Lucas Sousa",
+    "genero": "Masculino",
+    "foto": "https://placehold.co/100x100/6EE7B7/FFFFFF?text=LS",
+    "banner": "",
+    "titulo": "Professor na FIAP | CSS | Tailwind | JavaScript | React.js | Coordenador Pedagógico",
+    "cargo": "Professor",
+    "empresa": "FIAP",
+    "resumo": "Com uma formação acadêmica diversificada sempre busquei ter uma base sólida em educação e tecnologia. Meu objetivo de carreira é crescer profissionalmente e me desenvolver como líder na área de educação TI. Atuo como Coordenador Pedagógico e Professor Universitário, com foco em front-end, CSS, Tailwind e React.",
+    "estado": "São Paulo",
+    "pais": "Brasil",
+    "area": "Educação",
+    "seguidores": [],
+    "seguindo": [],
+    "estrelas": [],
+    "competencias": ["CSS", "Tailwind", "JavaScript", "React.js"],
+    "experiencias": [
+      {
+        "empresa": "FIAP",
+        "tipo": "Ensino",
+        "cargo": "Professor / Coordenador Pedagógico",
+        "inicio": "2018",
+        "fim": "Presente",
+        "local": "São Paulo, SP",
+        "descricao": "Atuação em coordenação pedagógica e docência em desenvolvimento front-end e tecnologias web."
+      }
+    ],
+    "formacao": [
+      {
+        "curso": "MBA",
+        "instituicao": "USP/ESALQ",
+        "ano": 2020
+      }
+    ],
+    "projetos": [],
+    "certificacoes": [],
+    "idiomas": [
+      {
+        "idioma": "Português",
+        "nivel": "Nativo"
+      }
+    ],
+    "areainteresses": [],
+    "email": "lucas.sousa@fiap.com.br",
+    "senha": "150387fiap",
+    "aniversario": "1987-03-15",
+    "posts": []
+  },
+  {
+    "id": "wellington_cidade",
+    "nome": "Wellington Cidade Silva",
+    "genero": "Masculino",
+    "foto": "https://placehold.co/100x100/6EE7B7/FFFFFF?text=WC",
+    "banner": "",
+    "titulo": "Full Stack II Teacher and Coordinator of Courses in Systems Development Technologies and Digital Games || Scrum Master",
+    "cargo": "Professor / Coordenador",
+    "empresa": "FIAP / FUNIBER",
+    "resumo": "I have been working for 20 years with professional education, developing several programming languages, systems analysis, database modeling, wireframing of desktop, web and mobile systems and digital products. Experienced in teaching Full Stack, Scrum and development practices.",
+    "estado": "São Paulo",
+    "pais": "Brasil",
+    "area": "Educação",
+    "seguidores": [],
+    "seguindo": [],
+    "estrelas": [],
+    "competencias": ["HTML", "CSS", "JavaScript", "React", "Node.js"],
+    "experiencias": [
+      {
+        "empresa": "FIAP",
+        "tipo": "Ensino",
+        "cargo": "Professor / Coordenador",
+        "inicio": "2005",
+        "fim": "Presente",
+        "local": "São Paulo, SP",
+        "descricao": "Docência em disciplinas de desenvolvimento, coordenação de cursos e orientação de projetos."
+      }
+    ],
+    "formacao": [
+      {
+        "curso": "Formação em Sistemas",
+        "instituicao": "Universidade",
+        "ano": 2000
+      }
+    ],
+    "projetos": [],
+    "certificacoes": [],
+    "idiomas": [
+      {
+        "idioma": "Português",
+        "nivel": "Nativo"
+      },
+      {
+        "idioma": "Inglês",
+        "nivel": "Intermediário"
+      }
+    ],
+    "areainteresses": [],
+    "email": "wellington.cidade@fiap.com.br",
+    "senha": "200575fiap",
+    "aniversario": "1975-05-20",
+    "posts": []
+  }
+]
+
