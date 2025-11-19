@@ -63,10 +63,13 @@ Siga os passos abaixo para rodar a aplicação em sua máquina:
 ## 🔑 Login para autenticação
 
 Email Lucas Souza: lucas.sousa@fiap.com.br
+
 Email Wellinton Cidade: wellington.cidade@fiap.com.br
+
 ## *** Senha para autenticação
 
 Senha Lucas: 150387fiap
+
 Senha Welinton: 200575fiap
 
 ## 🧑‍💻 Autores
