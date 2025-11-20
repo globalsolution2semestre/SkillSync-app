@@ -7,8 +7,13 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+# Load API key from environment for security. Do NOT hard-code keys in source.
+API_KEY = os.environ.get('SKILLMATCH_API_KEY') or os.environ.get('GOOGLE_API_KEY')
+
+if not API_KEY:
+    print("[WARNING] No SKILLMATCH_API_KEY found in environment. Set SKILLMATCH_API_KEY before running the server.")
 # ⚠️ COLOQUE SUA CHAVE AQUI
-API_KEY = "AIzaSyDE_bzjHwpcVtYak2yHDmmyrWiNwS5B24o"
+API_KEY = ""
 
 def mapear_skills_ia(profissao_nome, skills_atuais_lista):
     if not API_KEY: return None

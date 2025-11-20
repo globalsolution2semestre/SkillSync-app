@@ -111,7 +111,7 @@ def mapear_skills_ia(profissao_nome, skills_atuais_usuario):
     Chama a API Gemini para gerar as skills E calcular o Nível de Prontidão
     do usuário em relação a essa profissão, retornando o resultado em JSON.
     """
-    api_key = "AIzaSyDE_bzjHwpcVtYak2yHDmmyrWiNwS5B24o"  # << SUBSTITUA PELA SUA CHAVE REAL
+    api_key = ""  # << SUBSTITUA PELA SUA CHAVE REAL
 
     if not api_key:
         print("\n❌ ERRO DE API: Chave não configurada.")
