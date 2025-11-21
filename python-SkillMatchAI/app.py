@@ -49,11 +49,16 @@ def mapear_skills_ia(profissao_nome, skills_atuais_lista):
 
     # Prompt focado em retornar JSON puro para dados estruturados
     prompt = (
-        f"Analise a profissão: \"{profissao_nome}\". "
-        f"Usuário tem: [{skills_str}]. "
-        "Retorne APENAS um JSON com as chaves: "
-        "\"score_prontidao\" (numero 0-100), \"hard_skills\" (lista), \"soft_skills\" (lista), \"skills_faltantes\" (lista). "
-        "Sem markdown, sem explicações extras no início ou fim."
+        "Você é um avaliador especializado em análise de competências profissionais. "
+        f"A profissão alvo é: \"{profissao_nome}\". "
+        f"O usuário possui atualmente as habilidades: [{skills_str}]. "
+        "Sua tarefa é: "
+        "1. Identificar as 5 Hard Skills essenciais e as 5 Soft Skills essenciais para essa profissão. "
+        "2. Calcular o Nível de Prontidão do usuário (0–100%), comparando semanticamente as habilidades atuais com as essenciais. "
+        "3. Gerar a lista de Habilidades Faltantes (reskilling necessário). "
+        "A resposta deve ser exclusivamente um JSON válido com as chaves: "
+        "\"score_prontidao (número, inteiro ou float)\", \"hard_skills (lista de strings)\", \"soft_skills (lista de strings)\", \"skills_faltantes (lista de strings)\". "
+        "Não inclua nenhuma explicação, texto fora do JSON ou formatação Markdown."
     )
 
     try:
@@ -81,15 +86,20 @@ def gerar_roteiro_ia(profissao_alvo, skills_faltantes):
     prompt = (
         f"Gere um plano de estudos detalhado de 4 semanas para requalificar um profissional que deseja se tornar \"{profissao_alvo}\". "
         f"O profissional deve focar em adquirir as seguintes habilidades: {skills_str}. "
-        "Estruture o conteúdo da seguinte forma para cada uma das 4 semanas: "
+        "Estruture o conteúdo da seguinte forma: "
         "Título: Plano de Estudos — {profissao_alvo} (4 semanas). "
-        "\n\nPara cada semana (Semana 1 a Semana 4): "
-        "\n- **Objetivo da semana**; "
-        "\n- **Hard Skills** (tarefas e conteúdos específicos); "
-        "\n- **Soft Skills** (tarefas e exercícios práticos); "
-        "\n- **Atividades práticas / projetos**; "
-        "\n- **Tempo estimado** (horas). "
-        "\n\nSeja claro, detalhado e específico, usando formatação Markdown."
+        "Para cada semana (Semana 1 a Semana 4): "
+        "- Objetivo da semana; "
+        "- Hard Skills (tarefas e conteúdos específicos); "
+        "- Soft Skills (tarefas e exercícios práticos); "
+        "- Atividades práticas / projetos; "
+        "- Tempo estimado (horas). "
+        "Após as 4 semanas, adicione uma seção chamada: \"Recursos recomendados\" contendo: "
+        "- Pelo menos 3 livros relevantes; "
+        "- Pelo menos 3 cursos (online ou presenciais); "
+        "- Sites, canais ou plataformas úteis para estudo contínuo. "
+        "Evite links muito longos, apenas cite nomes e plataformas. "
+        "Seja claro, detalhado, organizado e específico."
     )
 
     try:
