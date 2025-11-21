@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/processar-chat",
-      "destination": "SUA_URL_RENDER/processar-chat"
+      "destination": "https://skillmatch-backend-vew0.onrender.com/processar-chat"
     }
   ]
 }
