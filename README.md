@@ -1,6 +1,6 @@
 # SkillSync-app
 
-[![Deploy](https://img.shields.io/badge/Vercel-live_demo-black?style=for-the-badge&logo=vercel)](https://skill-sync-app.vercel.app/)
+[![Deploy](https://img.shields.io/badge/Vercel-live_demo-black?style=for-the-badge&logo=vercel)](https://skill-sync-app-xi.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-repositório-black?style=for-the-badge&logo=github)](https://github.com/globalsolution2semestre/SkillSync-app)
 
 ## 📖 Sobre o Projeto

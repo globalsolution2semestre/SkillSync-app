@@ -203,7 +203,7 @@ def gerar_roteiro_ia(profissao_alvo_nome, skills_faltantes):
     """
     Chama a API Gemini para gerar um roteiro de aprendizado real.
     """
-    api_key = "AIzaSyDE_bzjHwpcVtYak2yHDmmyrWiNwS5B24o"  # << SUBSTITUA PELA SUA CHAVE REAL
+    api_key = ""  # << SUBSTITUA PELA SUA CHAVE REAL
 
     if not api_key:
         return "\n(Plano de Aprendizado: Configure sua chave de API para habilitar a IA!)"

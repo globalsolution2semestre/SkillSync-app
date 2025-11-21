@@ -3,17 +3,45 @@ from flask_cors import CORS
 from google import genai
 import json
 import os
+from dotenv import load_dotenv
+
+# Carrega variáveis do arquivo .env (apenas para desenvolvimento local)
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
 # Load API key from environment for security. Do NOT hard-code keys in source.
-API_KEY = os.environ.get('SKILLMATCH_API_KEY') or os.environ.get('GOOGLE_API_KEY')
+API_KEY = os.getenv('SKILLMATCH_API_KEY')
+API_KEY_PRESENT = bool(API_KEY)
 
 if not API_KEY:
-    print("[WARNING] No SKILLMATCH_API_KEY found in environment. Set SKILLMATCH_API_KEY before running the server.")
-# ⚠️ COLOQUE SUA CHAVE AQUI
-API_KEY = ""
+    app.logger.warning("No SKILLMATCH_API_KEY found in environment. Set SKILLMATCH_API_KEY before running the server.")
+else:
+    app.logger.info("SKILLMATCH_API_KEY loaded from environment.")
+
+# Cache client instance so we only create it once
+GENAI_CLIENT = None
+def get_genai_client():
+    global GENAI_CLIENT
+    if GENAI_CLIENT:
+        return GENAI_CLIENT
+    if not API_KEY:
+        return None
+    try:
+        GENAI_CLIENT = genai.Client(api_key=API_KEY)
+        return GENAI_CLIENT
+    except Exception as e:
+        app.logger.exception(f"Failed to initialize GenAI client: {e}")
+        return None
+
+# Simple health endpoint to check API key presence and service readiness
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({
+        "ok": True,
+        "api_key_present": API_KEY_PRESENT
+    })
 
 def mapear_skills_ia(profissao_nome, skills_atuais_lista):
     if not API_KEY: return None
@@ -29,16 +57,20 @@ def mapear_skills_ia(profissao_nome, skills_atuais_lista):
     )
 
     try:
-        client = genai.Client(api_key=API_KEY)
+        client = get_genai_client()
+        if not client:
+            app.logger.error('GenAI client not available (missing or invalid API key)')
+            return None
+
         response = client.models.generate_content(model='gemini-2.0-flash', contents=prompt)
-        
+
         raw_text = response.text.strip()
         if raw_text.startswith('```json'): raw_text = raw_text[7:]
         if raw_text.endswith('```'): raw_text = raw_text[:-3]
 
         return json.loads(raw_text)
     except Exception as e:
-        print(f"Erro na IA Mapeamento: {e}")
+        app.logger.exception(f"Erro na IA Mapeamento: {e}")
         return None
 
 def gerar_roteiro_ia(profissao_alvo, skills_faltantes):
@@ -61,10 +93,15 @@ def gerar_roteiro_ia(profissao_alvo, skills_faltantes):
     )
 
     try:
-        client = genai.Client(api_key=API_KEY)
+        client = get_genai_client()
+        if not client:
+            app.logger.error('GenAI client not available (missing or invalid API key)')
+            return "Erro ao gerar roteiro: chave de API ausente no servidor"
+
         response = client.models.generate_content(model='gemini-2.0-flash', contents=prompt)
         return response.text
     except Exception as e:
+        app.logger.exception(f"Erro ao gerar roteiro: {e}")
         return f"Erro ao gerar roteiro: {e}"
 
 @app.route('/processar-chat', methods=['POST'])
@@ -83,6 +120,11 @@ def processar_chat():
 
     print(f"Processando IA para: {nome}, Alvo: {profissao}")
 
+    # Verifica se a chave de API está disponível antes de prosseguir
+    if not API_KEY or not get_genai_client():
+        app.logger.error('Request blocked: SKILLMATCH_API_KEY ausente ou client inválido')
+        return jsonify({"sucesso": False, "erro": "SKILLMATCH_API_KEY não definida no servidor"}), 500
+
     # 1. Mapeamento (Score e Skills)
     analise = mapear_skills_ia(profissao, skills_atuais)
     
@@ -99,4 +141,8 @@ def processar_chat():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Use PORT from environment (Render, Heroku, Cloud Run provide this)
+    port = int(os.getenv('PORT', '5000'))
+    # Enable debug only when FLASK_DEBUG=1 in env (do not enable in production)
+    debug = os.getenv('FLASK_DEBUG', '0') == '1'
+    app.run(host='0.0.0.0', port=port, debug=debug)
