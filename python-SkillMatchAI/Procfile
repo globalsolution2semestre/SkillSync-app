@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: gunicorn python-SkillMatchAI.app:app
